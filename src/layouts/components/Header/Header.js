@@ -9,6 +9,8 @@ import {
     faCoins,
     faGear,
     faSignOut,
+    faMoon,
+    faPlus,
 } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
@@ -19,7 +21,18 @@ import Button from '~/components/Button';
 import styles from './Header.module.scss';
 import images from '~/assets/images';
 import Menu from '~/components/Popper/Menu';
-import { UploadIcon, MessageIcon, InboxIcon } from '~/components/Icons';
+import {
+    MessageIcon,
+    InboxIcon,
+    ViewProfileIcon,
+    GetCoinsIcon,
+    LiveStudioIcon,
+    SettingIcon,
+    LanguageIcon,
+    FeedbackIcon,
+    KeyboardIcon,
+    DarkModeIcon,
+} from '~/components/Icons';
 import Image from '~/components/Image';
 import Search from '../Search';
 
@@ -27,7 +40,7 @@ const cx = classNames.bind(styles);
 
 const MENU_ITEMS = [
     {
-        icon: <FontAwesomeIcon icon={faEarthAsia} />,
+        icon: <LanguageIcon />,
         title: 'English',
         children: {
             title: 'Language',
@@ -46,13 +59,17 @@ const MENU_ITEMS = [
         },
     },
     {
-        icon: <FontAwesomeIcon icon={faCircleQuestion} />,
+        icon: <FeedbackIcon />,
         title: 'Feedback and help',
         to: '/feedback',
     },
     {
-        icon: <FontAwesomeIcon icon={faKeyboard} />,
+        icon: <KeyboardIcon />,
         title: 'Keyboard shortcuts',
+    },
+    {
+        icon: <DarkModeIcon />,
+        title: 'Dark mode',
     },
 ];
 
@@ -71,17 +88,22 @@ function Header() {
 
     const userMenu = [
         {
-            icon: <FontAwesomeIcon icon={faUser} />,
+            icon: <ViewProfileIcon />,
             title: 'View profile',
-            to: '/feedback',
+            to: '/profile',
         },
         {
-            icon: <FontAwesomeIcon icon={faCoins} />,
+            icon: <GetCoinsIcon />,
             title: 'Get coins',
             to: '/coin',
         },
         {
-            icon: <FontAwesomeIcon icon={faGear} />,
+            icon: <LiveStudioIcon />,
+            title: 'LIVE Studio',
+            to: '/live',
+        },
+        {
+            icon: <SettingIcon />,
             title: 'Setting',
             to: '/settings',
         },
@@ -106,11 +128,9 @@ function Header() {
                 <div className={cx('actions')}>
                     {currentUser ? (
                         <>
-                            <Tippy delay={[0, 200]} content="Upload Video" placement="bottom">
-                                <button className={cx('action-btn')}>
-                                    <UploadIcon />
-                                </button>
-                            </Tippy>
+                            <Button upload leftIcon={<FontAwesomeIcon icon={faPlus} />}>
+                                Upload
+                            </Button>
                             <Tippy delay={[0, 200]} content="Message" placement="bottom">
                                 <button className={cx('action-btn')}>
                                     <MessageIcon />
@@ -125,7 +145,9 @@ function Header() {
                         </>
                     ) : (
                         <>
-                            <Button text>Upload</Button>
+                            <Button upload leftIcon={<FontAwesomeIcon icon={faPlus} />}>
+                                Upload
+                            </Button>
                             <Button primary>Log in</Button>
                         </>
                     )}

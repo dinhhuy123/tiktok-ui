@@ -1,9 +1,23 @@
 // Menu wrapper
 .menu-list {
     width: 224px;
+    position: relative;
 
     .menu-item {
         margin-left: 0;
+    }
+
+    .arrow {
+        position: absolute;
+        display: block;
+        width: 0;
+        height: 0;
+        box-shadow: rgb(0 0 0 / 12%) 0px;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-bottom: 10px solid rgb(255, 255, 255);
+        top: -8px;
+        right: 18px;
     }
 }
 
@@ -21,8 +35,7 @@
     width: 100%;
     justify-content: flex-start;
     border-radius: 0;
-    font-weight: 500;
-    padding: 11px 16px;
+    padding: 10px 16px;
     line-height: 1.8rem;
 
     &.separate {
