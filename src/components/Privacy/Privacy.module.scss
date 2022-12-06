@@ -1,0 +1,22 @@
+.wrapper {
+    border-top: 1px solid #e3e3e4;
+    position: relative;
+    padding-top: 16px;
+    padding-left: 8px;
+}
+.link {
+    margin-bottom: 8px;
+    .title {
+        color: rgba(22, 24, 35, 0.5);
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 17px;
+        display: inline-block;
+        margin-right: 6px;
+        margin-top: 5px;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}

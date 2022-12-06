@@ -11,6 +11,8 @@ import {
     UserGroupIcon,
 } from '~/components/Icons';
 import SuggestedAccounts from '~/components/SuggestedAccounts';
+import Discover from '~/components/Discover';
+import Privacy from '~/components/Privacy';
 
 const cx = classNames.bind(styles);
 
@@ -29,6 +31,8 @@ function Sidebar({ className }) {
             </Menu>
             <SuggestedAccounts label="Suggest accounts" />
             <SuggestedAccounts label="Following accounts" />
+            <Discover label="Discover" />
+            <Privacy />
         </aside>
     );
 }
