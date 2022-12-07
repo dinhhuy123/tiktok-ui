@@ -1,4 +1,5 @@
 .wrapper {
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -13,6 +14,7 @@
     background-color: var(--white);
     border: 1px solid transparent;
     user-select: none;
+    position: relative;
 
     + .wrapper {
         margin-left: 8px;
@@ -27,6 +29,17 @@
 .icon + .title,
 .title + .icon {
     margin-left: 8px;
+}
+
+.modal-icon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: absolute;
+    left: 12px;
 }
 
 .icon {

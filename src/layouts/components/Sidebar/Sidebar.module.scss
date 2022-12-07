@@ -2,6 +2,7 @@
     width: 356px;
     padding: 20px 0 26px 8px;
     margin-left: -18px;
+    padding-right: 10px;
 }
 
 .sidebar {
@@ -18,4 +19,28 @@
             display: block;
         }
     }
+}
+
+.login-sidebar {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid #e3e3e4;
+    position: relative;
+    padding: 20px 8px 24px 8px;
+    margin: 0;
+}
+
+.title {
+    color: rgba(22, 24, 35, 0.5);
+    font-size: 16px;
+    line-height: 22px;
+}
+
+.login-btn {
+    min-width: 168px;
+    min-height: 48px;
+    font-size: 18px;
+    line-height: 25px;
+    font-weight: 700;
+    margin-top: 20px;
 }
