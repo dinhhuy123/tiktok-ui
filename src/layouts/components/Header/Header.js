@@ -62,7 +62,7 @@ const MENU_ITEMS = [
     },
 ];
 
-function Header() {
+function Header({ onClick }) {
     const currentUser = false;
 
     // Handle logic
@@ -134,10 +134,12 @@ function Header() {
                         </>
                     ) : (
                         <>
-                            <Button upload leftIcon={<FontAwesomeIcon icon={faPlus} />}>
+                            <Button upload onClick={onClick} leftIcon={<FontAwesomeIcon icon={faPlus} />}>
                                 Upload
                             </Button>
-                            <Button primary>Log in</Button>
+                            <Button primary onClick={onClick}>
+                                Log in
+                            </Button>
                         </>
                     )}
                     <Menu items={currentUser ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>

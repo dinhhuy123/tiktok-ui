@@ -72,10 +72,10 @@ const MODAL_ITEMS = [
     },
 ];
 
-function Modal() {
+function Modal({ onClick }) {
     return (
         <div className={cx('modal-container')}>
-            <button className={cx('close-btn')}>
+            <button onClick={onClick} className={cx('close-btn')}>
                 <ModalXmarkIcon />
             </button>
             <div className={cx('modal-body')}>
