@@ -17,12 +17,12 @@ import Button from '~/components/Button';
 
 const cx = classNames.bind(styles);
 
-function Sidebar({ className }) {
-    const currentUser = false;
+function Sidebar({ className, state }) {
+    const currentUser = true;
     return (
-        <aside className={cx('wrapper', className)}>
+        <aside className={cx('wrapper', className, state ? 'narrow' : '')}>
             {currentUser ? (
-                <p>
+                <>
                     <Menu>
                         <MenuItem
                             title="For you"
@@ -45,9 +45,9 @@ function Sidebar({ className }) {
                     </Menu>
                     <SuggestedAccounts label="Suggest accounts" />
                     <SuggestedAccounts label="Following accounts" />
-                    <Discover label="Discover" />
+                    <Discover label="Discover" className={cx(state ? 'narrow-title' : '')} />
                     <Privacy />
-                </p>
+                </>
             ) : (
                 <>
                     <Menu>

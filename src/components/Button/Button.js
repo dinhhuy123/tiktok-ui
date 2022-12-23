@@ -16,6 +16,7 @@ function Button({
     upload = false,
     small = false,
     large = false,
+    widen = false,
     children,
     className,
     modalIcon,
@@ -57,6 +58,7 @@ function Button({
         rounded,
         small,
         large,
+        widen,
     });
 
     return (
