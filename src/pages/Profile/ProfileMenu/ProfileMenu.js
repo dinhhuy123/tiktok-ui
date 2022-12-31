@@ -26,7 +26,38 @@ function ProfileMenu({ shareItems = [], moreItems = [], onChange = defaultFn }) 
             <Tippy
                 interactive
                 delay={[0, 700]}
-                offset={[-100, 10]}
+                offset={[-80, -5]}
+                placement="bottom"
+                render={(attrs) => (
+                    <div className={cx('more-list')} tabIndex="-1" {...attrs}>
+                        <div className={cx('arrow')}></div>
+                        <PopperWrapper>
+                            <div className={cx('more-body')}>
+                                {moreItems.map((item, index) => (
+                                    <div key={index} className={cx('more-items-link')}>
+                                        <a href="/">
+                                            <div className={cx('more-list', { separate: item.separate })}>
+                                                <span className={cx('more-icon')}>{item.icon}</span>
+                                                <span>{item.title}</span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                ))}
+                            </div>
+                        </PopperWrapper>
+                    </div>
+                )}
+                onHide={() => setHistory([{ data: newItems }])}
+            >
+                <div className={cx('user-more')}>
+                    <MoreIcon />
+                </div>
+            </Tippy>
+            <Tippy
+                visible
+                interactive
+                delay={[0, 700]}
+                offset={[-110, 0]}
                 placement="bottom"
                 render={(attrs) => (
                     <div className={cx('share-list')} tabIndex="-1" {...attrs}>
@@ -41,29 +72,6 @@ function ProfileMenu({ shareItems = [], moreItems = [], onChange = defaultFn }) 
             >
                 <div className={cx('share')}>
                     <ShareIcon />
-                </div>
-            </Tippy>
-            <Tippy
-                visible
-                interactive
-                delay={[0, 700]}
-                offset={[-100, 10]}
-                placement="bottom"
-                render={(attrs) => (
-                    <div className={cx('more-list')} tabIndex="-1" {...attrs}>
-                        <div className={cx('arrow')}></div>
-                        <PopperWrapper>
-                            <div className={cx('more-body')}>
-                                {moreItems.map((item, index) => (
-                                    <ProfileMenuItem key={index} data={item} className={cx('override')} />
-                                ))}
-                            </div>
-                        </PopperWrapper>
-                    </div>
-                )}
-            >
-                <div className={cx('user-more')}>
-                    <MoreIcon />
                 </div>
             </Tippy>
         </>

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import styles from './Discover.modules.scss';
 import Button from '~/components/Button';
@@ -48,5 +49,10 @@ function Discover({ label, className }) {
         </div>
     );
 }
+
+Discover.propTypes = {
+    label: PropTypes.string.isRequired,
+    className: PropTypes.string,
+};
 
 export default Discover;

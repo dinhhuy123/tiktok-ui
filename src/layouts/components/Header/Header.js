@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical, faSignOut, faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -63,7 +64,7 @@ const MENU_ITEMS = [
 ];
 
 function Header({ onClick, className }) {
-    const currentUser = true;
+    const currentUser = false;
 
     // Handle logic
     const handleMenuChange = (menuItem) => {
@@ -160,5 +161,10 @@ function Header({ onClick, className }) {
         </header>
     );
 }
+
+Header.propTypes = {
+    onclick: PropTypes.func,
+    className: PropTypes.string,
+};
 
 export default Header;

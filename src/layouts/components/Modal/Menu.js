@@ -1,19 +1,23 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
-import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './Modal.module.scss';
 import ModalItem from './ModalItem';
 import LoginNormal from './LoginNormal';
 import LoginQRCode from './LoginQRCode';
+import SignupNormal from './SignupNormal';
 
 const cx = classNames.bind(styles);
 
 const defaultFn = () => {};
 
-function Menu({ items = [], onChange = defaultFn }) {
+function Menu({ items = [], signup = [], onChange = defaultFn, changeType }) {
     const [history, setHistory] = useState([{ data: items }]);
+    useEffect(() => {
+        changeType ? setHistory([{ data: signup.slice(0, 3) }]) : setHistory([{ data: items }]);
+    }, [changeType, items, signup]);
     const current = history[history.length - 1];
 
     const renderItems = () => {
@@ -41,6 +45,8 @@ function Menu({ items = [], onChange = defaultFn }) {
                 return <LoginQRCode title={current.title} />;
             case 'LOGIN':
                 return <LoginNormal title={current.title} />;
+            case 'SIGNUP':
+                return <SignupNormal title={current.title} />;
             default:
                 throw new Error('error!');
         }
@@ -62,8 +68,17 @@ function Menu({ items = [], onChange = defaultFn }) {
                     {changeLoginType()}
                 </>
             )}
-            {history.length <= 1 && <h2 className={cx('title')}>Log in to TikTok</h2>}
+            {!changeType
+                ? history.length <= 1 && <h2 className={cx('title')}>Log in to TikTok</h2>
+                : history.length <= 1 && <h2 className={cx('title')}>Sign up for TikTok</h2>}
             {renderItems()}
+            {history.length <= 1 && changeType && current.data.length <= 3 && (
+                <div className={cx('more')}>
+                    <button className={cx('more-btn')} onClick={() => setHistory([{ data: signup }])}>
+                        <FontAwesomeIcon icon={faChevronDown} />
+                    </button>
+                </div>
+            )}
         </div>
     );
 }

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { SecondStepIcon, ThirdStepIcon } from '~/components/Icons';
 import styles from './Modal.module.scss';
@@ -37,5 +38,9 @@ function LoginQRCode({ title }) {
         </div>
     );
 }
+
+LoginQRCode.propTypes = {
+    title: PropTypes.string.isRequired,
+};
 
 export default LoginQRCode;

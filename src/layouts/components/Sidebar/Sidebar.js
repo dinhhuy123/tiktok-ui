@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import Menu, { MenuItem } from './Menu';
 import styles from './Sidebar.module.scss';
@@ -17,8 +18,8 @@ import Button from '~/components/Button';
 
 const cx = classNames.bind(styles);
 
-function Sidebar({ className, state }) {
-    const currentUser = true;
+function Sidebar({ className, state, onClick }) {
+    const currentUser = false;
     return (
         <aside className={cx('wrapper', className, state ? 'narrow' : '')}>
             {currentUser ? (
@@ -72,7 +73,7 @@ function Sidebar({ className, state }) {
                     </Menu>
                     <div className={cx('login-sidebar')}>
                         <span className={cx('title')}>Log in to follow creators, like videos, and view comments.</span>
-                        <Button outline large className={cx('login-btn')}>
+                        <Button onClick={onClick} outline large className={cx('login-btn')}>
                             Login
                         </Button>
                     </div>
@@ -84,5 +85,11 @@ function Sidebar({ className, state }) {
         </aside>
     );
 }
+
+Sidebar.propTypes = {
+    className: PropTypes.string,
+    state: PropTypes.bool,
+    onClick: PropTypes.func,
+};
 
 export default Sidebar;

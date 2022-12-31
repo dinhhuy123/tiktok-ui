@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import Button from '~/components/Button';
 import styles from './Modal.module.scss';
@@ -11,5 +12,10 @@ function ModalItem({ data, onClick }) {
         </Button>
     );
 }
+
+ModalItem.propTypes = {
+    data: PropTypes.object.isRequired,
+    onClick: PropTypes.func.isRequired,
+};
 
 export default ModalItem;

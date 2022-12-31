@@ -1,13 +1,13 @@
+import { useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './LoginWithCode.module.scss';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SearchCode from '~/layouts/components/Modal/SearchCode';
-import { useState } from 'react';
 
 const cx = classNames.bind(styles);
 
-function LoginWithCode() {
+function LoginWithCode({ phone, setPhone, code, setCode }) {
     const [codeState, setCodeState] = useState(false);
     return (
         <>
@@ -27,11 +27,23 @@ function LoginWithCode() {
                     </div>
                     {codeState && <SearchCode />}
                 </div>
-                <input name="mobile" className={cx('phone-number')} placeholder="Phone number" />
+                <input
+                    onChange={(e) => setPhone(e.target.value)}
+                    value={phone}
+                    name="mobile"
+                    className={cx('phone-number')}
+                    placeholder="Phone number"
+                />
             </div>
             <div className={cx('send-code')}>
                 <div className={cx('input-container')}>
-                    <input name="code" className={cx('input-code')} placeholder="Enter 6-digit code" />
+                    <input
+                        onChange={(e) => setCode(e.target.value)}
+                        value={code}
+                        name="code"
+                        className={cx('input-code')}
+                        placeholder="Enter 6-digit code"
+                    />
                 </div>
                 <button className={cx('code-btn', 'disabled-code-btn')}>Send code</button>
             </div>

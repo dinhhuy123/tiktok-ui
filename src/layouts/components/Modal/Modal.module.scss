@@ -19,6 +19,31 @@
     height: 581px;
     flex: 1 1 0%;
     overflow: auto;
+    position: relative;
+}
+
+.agreeing {
+    align-items: center;
+    padding: 16px 30px;
+    position: absolute;
+    bottom: 0;
+    right: 24px;
+}
+
+.agreeing-content {
+    color: rgba(22, 24, 35, 0.5);
+    font-family: var(--font-family);
+    font-size: 12px;
+    line-height: 15px;
+    width: 375px;
+    text-align: center;
+    a {
+        color: rgb(22, 24, 35);
+        cursor: pointer;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
 }
 
 .inner {
@@ -26,6 +51,19 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
+}
+
+.more {
+    width: 100%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.more-btn {
+    background-color: transparent;
+    scale: 1.5;
+    cursor: pointer;
 }
 
 .title {
@@ -63,6 +101,9 @@
         font-weight: 600;
         line-height: 18px;
         color: var(--primary);
+        &:hover {
+            text-decoration: underline;
+        }
     }
 }
 
@@ -128,7 +169,7 @@
 
 .tiktok-step {
     color: rgb(22, 24, 35);
-    font-family: ProximaNova, Arial, Tahoma, PingFangSC, sans-serif;
+    font-family: var(--font-family);
     font-size: 14px;
     line-height: 20px;
     margin-bottom: 4px;
@@ -149,7 +190,7 @@
     font-size: 16px;
     line-height: 22px;
     font-weight: 700;
-    font-family: ProximaNova, PingFangSC, sans-serif;
+    font-family: var(--font-family);
     align-items: center;
     -webkit-box-pack: center;
     justify-content: center;

@@ -1,0 +1,33 @@
+.search-day {
+    position: absolute;
+}
+
+.day-list-container {
+    left: 0;
+    right: 0;
+    width: 120px;
+    max-height: 320px;
+    overflow: auto;
+    background: rgb(255, 255, 255);
+    border-radius: 4px;
+    box-shadow: rgb(0 0 0 / 12%) 0px 2px 12px;
+    top: 50px;
+    z-index: 12;
+    display: block;
+    transition: display 0.3s ease 0s;
+}
+
+.day-list {
+    li {
+        height: 34px;
+        font-size: 1.6rem;
+        padding: 0px 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        color: rgb(22, 24, 35);
+        &:hover {
+            background: rgba(22, 24, 35, 0.03);
+        }
+    }
+}

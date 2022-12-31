@@ -64,7 +64,7 @@ const CODE_ITEMS = [
 
 function SearchCode() {
     const [codeZone, setCodeZone] = useState(CODE_ITEMS);
-    const [state, setState] = useState(false);
+    // const [state, setState] = useState(false);
     const searchCode = CODE_ITEMS;
 
     const handleSearch = (value) => {
@@ -121,9 +121,9 @@ function SearchCode() {
                 </div>
                 <div className={cx('code-list-container')}>
                     <ul className={cx('code-list')}>
-                        {codeZone.map((items) => {
-                            items.forEach((item) => <li>{item}</li>);
-                        })}
+                        {codeZone.map((items) => (
+                            <li key={items.id}>{items.item}</li>
+                        ))}
                     </ul>
                 </div>
             </PopperWrapper>

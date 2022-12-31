@@ -22,7 +22,7 @@ function DefaultLayout({ children }) {
                 </div>
             )}
             <div className={cx('container')}>
-                <Sidebar className={cx('sidebar')} />
+                <Sidebar onClick={() => setModal(true)} className={cx('sidebar')} />
                 <div className={cx('content')}>{children}</div>
             </div>
         </div>
