@@ -1,4 +1,7 @@
+import { useState } from 'react';
 import classNames from 'classnames/bind';
+import { faCaretDown, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './SearchDay.module.scss';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 
@@ -101,17 +104,40 @@ const DAY_ITEMS = [
 ];
 
 function SearchYear() {
+    const [dayState, setDayState] = useState(false);
+    const [day, setDay] = useState('Day');
+    const [active, setActive] = useState(false);
+
+    const handleDay = (days) => {
+        setDay(days.item);
+        setActive(true);
+    };
     return (
-        <div className={cx('search-day')}>
-            <PopperWrapper className={cx('popper-wrapper')}>
-                <div className={cx('day-list-container')}>
-                    <ul className={cx('day-list')}>
-                        {DAY_ITEMS.map((items, index) => (
-                            <li key={index}>{items.item}</li>
-                        ))}
-                    </ul>
+        <div className={cx('day-container')}>
+            <div onClick={() => setDayState(!dayState)} className={cx('mo-da-ye')}>
+                <span className={cx(active ? 'active' : '')}>{day}</span>
+                <button className={cx('search-code-btn', dayState ? 'turn-around' : 'turn-back')}>
+                    <FontAwesomeIcon icon={faCaretDown} />
+                </button>
+            </div>
+            {dayState && (
+                <div className={cx('search-day')}>
+                    <PopperWrapper className={cx('popper-wrapper')}>
+                        <div className={cx('day-list-container')}>
+                            <ul className={cx('day-list')}>
+                                {DAY_ITEMS.map((items, index) => (
+                                    <li key={index} onClick={() => handleDay(items)}>
+                                        {items.item}
+                                        {day === items.item && (
+                                            <FontAwesomeIcon icon={faCheck} className={cx('check-icon')} />
+                                        )}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </PopperWrapper>
                 </div>
-            </PopperWrapper>
+            )}
         </div>
     );
 }

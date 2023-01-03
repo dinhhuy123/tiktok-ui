@@ -12,41 +12,14 @@ const cx = classNames.bind(styles);
 
 function Signup({ phone, setPhone, code, setCode }) {
     const [codeState, setCodeState] = useState(false);
-    const [monthState, setMonthState] = useState(false);
-    const [dayState, setDayState] = useState(false);
-    const [yearState, setYearState] = useState(false);
 
     return (
         <>
             <div className={cx('description')}>When's your birthday?</div>
             <div className={cx('birthday')}>
-                <div className={cx('month-container')}>
-                    <div onClick={() => setMonthState(!monthState)} className={cx('mo-da-ye')}>
-                        <span>Month</span>
-                        <button className={cx('search-code-btn', monthState ? 'turn-around' : 'turn-back')}>
-                            <FontAwesomeIcon icon={faCaretDown} />
-                        </button>
-                    </div>
-                    {monthState && <SearchMonth />}
-                </div>
-                <div className={cx('day-container')}>
-                    <div onClick={() => setDayState(!dayState)} className={cx('mo-da-ye')}>
-                        <span>Day</span>
-                        <button className={cx('search-code-btn', dayState ? 'turn-around' : 'turn-back')}>
-                            <FontAwesomeIcon icon={faCaretDown} />
-                        </button>
-                    </div>
-                    {dayState && <SearchDay />}
-                </div>
-                <div className={cx('year-container')}>
-                    <div onClick={() => setYearState(!yearState)} className={cx('mo-da-ye')}>
-                        <span>Year</span>
-                        <button className={cx('search-code-btn', yearState ? 'turn-around' : 'turn-back')}>
-                            <FontAwesomeIcon icon={faCaretDown} />
-                        </button>
-                    </div>
-                    {yearState && <SearchYear />}
-                </div>
+                <SearchMonth />
+                <SearchDay />
+                <SearchYear />
             </div>
             <p className={cx('privacy')}>Your birthday won't be shown publicly.</p>
             <div className={cx('description')}>
