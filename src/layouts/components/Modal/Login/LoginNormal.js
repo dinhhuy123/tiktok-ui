@@ -1,14 +1,15 @@
-// import { useState } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 // import axios from 'axios';
 import classNames from 'classnames/bind';
-import styles from './Modal.module.scss';
+import styles from './Login.module.scss';
 // import LoginWithPassword from './LoginWithPassword';
-import LoginWithCode from './LoginWithCode';
+import LoginType from './LoginType';
 
 const cx = classNames.bind(styles);
 
 function Login({ title }) {
+    const [changeLoginType, setChangeLoginType] = useState(false);
     // const [phone, setPhone] = useState('');
     // const [code, setCode] = useState('');
     // const handledSubmit = async (e) => {
@@ -23,11 +24,16 @@ function Login({ title }) {
     const handledSubmit = (e) => {
         e.preventDefault();
     };
+
+    const handleChangeLoginType = (e) => {
+        e.preventDefault();
+        setChangeLoginType(!changeLoginType);
+    };
     return (
         <form className={cx('form-input')} onSubmit={handledSubmit}>
             <h4 className={cx('header-title')}>{title}</h4>
             {/* phone={phone} setPhone={setPhone} code={code} setCode={setCode} */}
-            <LoginWithCode />
+            <LoginType onClick={handleChangeLoginType} changeLoginType={changeLoginType} />
             {/* <LoginWithPassword /> */}
             <button type="submit" className={cx('login-btn', 'disabled-btn')}>
                 Log in

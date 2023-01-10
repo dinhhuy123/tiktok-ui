@@ -5,9 +5,8 @@ import { faChevronDown, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './Modal.module.scss';
 import ModalItem from './ModalItem';
-import LoginNormal from './LoginNormal';
-import LoginQRCode from './LoginQRCode';
-import SignupNormal from './SignupNormal';
+import { LoginNormal, LoginQRCode } from './Login';
+import { SignupNormal } from './Signup';
 
 const cx = classNames.bind(styles);
 

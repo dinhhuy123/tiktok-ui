@@ -1,3 +1,4 @@
+// Sign up with email
 .description {
     color: rgb(22, 24, 35);
     font-weight: 600;
@@ -20,7 +21,6 @@
 .phone-container {
     background: rgba(22, 24, 35, 0.06);
     border: 1px solid rgba(22, 24, 35, 0.12);
-    transition: all 0.3s ease 0s;
     border-radius: 4px;
     margin-bottom: 9px;
     display: flex;
@@ -36,6 +36,11 @@
     }
 }
 
+.code-container {
+    position: relative;
+    cursor: pointer;
+}
+
 .zone-code {
     display: flex;
     align-items: center;
@@ -49,6 +54,16 @@
     line-height: 1;
     color: rgb(22, 24, 35);
     margin-inline-end: 12px;
+}
+
+.turn-around {
+    transform: rotate(180deg);
+    transition-duration: 0.3s;
+}
+
+.turn-back {
+    transform: rotate(0deg);
+    transition-duration: 0.3s;
 }
 
 .phone-number {
@@ -68,7 +83,7 @@
     transition: all 0.3s ease 0s;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 5px;
+    margin-bottom: 9px;
 }
 
 .input-container {
@@ -77,14 +92,15 @@
 }
 
 .input-code {
-    border-radius: 2px;
+    border: 2px 0 0 2px;
     background-color: rgba(22, 24, 35, 0.06);
     border: 1px solid rgba(22, 24, 35, 0.12);
+    border-inline-end-width: 0px;
     padding-inline-start: 12px;
-    color: rgb(22, 24, 35, 0.75);
+    color: rgb(22, 24, 35);
     line-height: 100%;
     outline: none;
-    font-size: 15px;
+    font-size: 1.5rem;
     height: 44px;
     caret-color: rgb(254, 44, 85);
     width: 100%;
@@ -93,7 +109,7 @@
 
 .code-btn {
     color: rgb(22, 24, 35);
-    font-family: ProximaNova, Arial, Tahoma, PingFangSC, sans-serif;
+    // font-family: ProximaNova, Arial, Tahoma, PingFangSC, sans-serif;
     font-weight: 600;
     background-color: rgba(22, 24, 35, 0.06);
     border: 1px solid rgba(22, 24, 35, 0.12);
@@ -108,28 +124,58 @@
     color: rgba(22, 24, 35, 0.34);
     cursor: not-allowed;
 }
+// Sign up with phone
+.email-container,
+.password-container {
+    margin-bottom: 9px;
+}
 
-.hide-icon {
+.password-container {
+    position: relative;
+}
+
+.email-address,
+.password {
+    border-radius: 2px;
+    background-color: rgba(22, 24, 35, 0.06);
+    border: 1px solid rgba(22, 24, 35, 0.12);
+    padding-inline-start: 12px;
+    color: rgb(22, 24, 35);
+    line-height: 100%;
+    outline: none;
+    font-size: 1.6rem;
+    height: 44px;
+    caret-color: rgb(254, 44, 85);
+    width: 100%;
+}
+
+.hide-icon,
+.show-icon {
     position: absolute;
-    top: 11px;
-    right: 13px;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
 }
 
-.change-type-input {
+.condition {
+    margin-bottom: 16px;
     display: flex;
-    align-items: center;
 }
 
-.divide {
-    width: 1px;
-    height: 12px;
-    margin: 0px 16px;
-    background: rgba(22, 24, 35, 0.12);
+.check-condition {
+    width: 32px;
+    margin-right: 8px;
 }
 
-.type-title {
+.checkbox {
+    width: 24px;
+    height: 24px;
+}
+
+.text-condition {
     color: rgba(22, 24, 35, 0.75);
-    font-weight: 500;
-    font-size: 12px;
-    display: inline-block;
+    font-family: var(--font-family);
+    font-size: 1.2rem;
+    line-height: 16px;
+    display: inline;
 }

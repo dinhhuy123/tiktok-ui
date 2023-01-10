@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { SecondStepIcon, ThirdStepIcon } from '~/components/Icons';
-import styles from './Modal.module.scss';
+import styles from './Login.module.scss';
 
 const cx = classNames.bind(styles);
 

@@ -58,7 +58,7 @@ const MONTH_ITEMS = [
     },
 ];
 
-function SearchYear() {
+function SearchMonth({ hide, setHide }) {
     const [monthState, setMonthState] = useState(false);
     const [month, setMonth] = useState('Month');
     const [active, setActive] = useState(false);
@@ -66,10 +66,16 @@ function SearchYear() {
     const handleMonth = (months) => {
         setMonth(months.item);
         setActive(true);
+        setMonthState(false);
+    };
+
+    const handleModal = (e) => {
+        e.stopPropagation();
+        setMonthState(!monthState);
     };
     return (
         <div className={cx('month-container')}>
-            <div onClick={() => setMonthState(!monthState)} className={cx('mo-da-ye')}>
+            <div onClick={handleModal} className={cx('mo-da-ye')}>
                 <span className={cx(active ? 'active' : '')}>{month}</span>
                 <button className={cx('search-code-btn', monthState ? 'turn-around' : 'turn-back')}>
                     <FontAwesomeIcon icon={faCaretDown} />
@@ -97,4 +103,4 @@ function SearchYear() {
     );
 }
 
-export default SearchYear;
+export default SearchMonth;
