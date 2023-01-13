@@ -8,12 +8,18 @@ import { HidePasswordIcon, ShowPasswordIcon } from '~/components/Icons';
 
 const cx = classNames.bind(styles);
 
-function LoginWithCode({ phone, setPhone, code, setCode, onClick, changeLoginType }) {
+function LoginWithCode({ phone, setPhone, code, setCode, onClick, changeLoginType, onForgot }) {
     const [codeState, setCodeState] = useState(false);
     const [passwordState, setPasswordState] = useState(false);
+    const [codeToPassword, setCodeToPassword] = useState(false);
 
     const handleChangeStatePassword = () => {
         setPasswordState(!passwordState);
+    };
+
+    const handleChangeCodeToPassword = (e) => {
+        e.preventDefault();
+        setCodeToPassword(!codeToPassword);
     };
     return (
         <>
@@ -43,21 +49,62 @@ function LoginWithCode({ phone, setPhone, code, setCode, onClick, changeLoginTyp
                             placeholder="Phone number"
                         />
                     </div>
-                    <div className={cx('send-code')}>
-                        <div className={cx('input-container')}>
-                            <input
-                                onChange={(e) => setCode(e.target.value)}
-                                value={code}
-                                name="code"
-                                className={cx('input-code')}
-                                placeholder="Enter 6-digit code"
-                            />
-                        </div>
-                        <button className={cx('code-btn', 'disabled-code-btn')}>Send code</button>
-                    </div>
-                    <a href="/" className={cx('change-link')}>
-                        Log in with password
-                    </a>
+                    {!codeToPassword ? (
+                        <>
+                            <div className={cx('send-code')}>
+                                <div className={cx('input-container')}>
+                                    <input
+                                        onChange={(e) => setCode(e.target.value)}
+                                        value={code}
+                                        name="code"
+                                        className={cx('input-code')}
+                                        placeholder="Enter 6-digit code"
+                                    />
+                                </div>
+                                <button className={cx('code-btn', 'disabled-code-btn')}>Send code</button>
+                            </div>
+                            <a
+                                href="/login/phone-or-email/phone-password"
+                                onClick={handleChangeCodeToPassword}
+                                className={cx('change-link')}
+                            >
+                                Log in with password
+                            </a>
+                        </>
+                    ) : (
+                        <>
+                            <div className={cx('password-container')}>
+                                <input
+                                    name="password"
+                                    type={passwordState ? 'text' : 'password'}
+                                    className={cx('password')}
+                                    placeholder="Password"
+                                />
+                                {passwordState ? (
+                                    <button onClick={handleChangeStatePassword}>
+                                        <HidePasswordIcon className={cx('hide-icon')} />
+                                    </button>
+                                ) : (
+                                    <button onClick={handleChangeStatePassword}>
+                                        <ShowPasswordIcon className={cx('show-icon')} />
+                                    </button>
+                                )}
+                            </div>
+                            <div className={cx('label')}>
+                                <a href="/login/phone/forget-password" className={cx('change-link')} onClick={onForgot}>
+                                    Forgot password?
+                                </a>
+                                <span className={cx('divide')}></span>
+                                <a
+                                    href="/login/phone-or-email/phone"
+                                    onClick={handleChangeCodeToPassword}
+                                    className={cx('change-link')}
+                                >
+                                    Log in with code
+                                </a>
+                            </div>
+                        </>
+                    )}
                 </>
             ) : (
                 <>

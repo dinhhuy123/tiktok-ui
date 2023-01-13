@@ -1,5 +1,6 @@
 .modal-container {
     padding-top: 48px;
+    position: relative;
 }
 
 .close-btn {
@@ -19,15 +20,15 @@
     height: 581px;
     flex: 1 1 0%;
     overflow: auto;
-    position: relative;
+    // position: relative;
 }
 
 .agreeing {
     align-items: center;
     padding: 16px 30px;
     position: absolute;
-    bottom: 0;
     right: 24px;
+    bottom: 62px;
 }
 
 .agreeing-content {
@@ -108,7 +109,7 @@
 }
 
 .header {
-    top: 12px;
+    top: 15px;
     left: 2px;
     position: absolute;
     height: 50px;
