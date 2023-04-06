@@ -60,3 +60,28 @@
         font-size: 13px;
     }
 }
+
+.zone-code {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    height: 44px;
+}
+
+.vn-code {
+    font-size: 16px;
+    line-height: 1;
+    color: rgb(22, 24, 35);
+    margin-inline-end: 12px;
+}
+
+.turn-around {
+    transform: rotate(180deg);
+    transition-duration: 0.3s;
+}
+
+.turn-back {
+    transform: rotate(0deg);
+    transition-duration: 0.3s;
+}

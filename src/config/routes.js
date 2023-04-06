@@ -5,7 +5,7 @@ const routes = {
     upload: '/upload',
     search: '/search',
     live: '/live',
-    account: '/@truongtinhnghi',
+    // account: '/@truongtinhnghi',
 };
 
 export default routes;

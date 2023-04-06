@@ -12,7 +12,7 @@ const cx = classNames.bind(styles);
 
 const defaultFn = () => {};
 
-function Menu({ items = [], signup = [], onChange = defaultFn, changeType }) {
+function Menu({ items = [], signup = [], onChange = defaultFn, changeType, currentUser }) {
     const [history, setHistory] = useState([{ data: items }]);
     useEffect(() => {
         changeType ? setHistory([{ data: signup.slice(0, 3) }]) : setHistory([{ data: items }]);
@@ -43,7 +43,7 @@ function Menu({ items = [], signup = [], onChange = defaultFn, changeType }) {
             case 'QR':
                 return <LoginQRCode title={current.title} />;
             case 'LOGIN':
-                return <LoginNormal title={current.title} />;
+                return <LoginNormal title={current.title} currentUser={currentUser} />;
             case 'SIGNUP':
                 return <SignupNormal title={current.title} />;
             default:

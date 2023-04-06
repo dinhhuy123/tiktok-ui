@@ -11,28 +11,6 @@
     text-align: center;
 }
 
-.login-btn {
-    border-radius: 4px;
-    border: none;
-    color: rgb(255, 255, 255);
-    background-color: rgb(254, 44, 85);
-    min-width: 120px;
-    min-height: 46px;
-    font-size: 16px;
-    line-height: 22px;
-    font-weight: 700;
-    font-family: var(--font-family);
-    align-items: center;
-    -webkit-box-pack: center;
-    justify-content: center;
-    padding: 6px 8px;
-    user-select: none;
-    cursor: pointer;
-    box-sizing: border-box;
-    width: 100%;
-    margin-top: 21px;
-}
-
 .disabled-btn {
     border: none;
     color: rgba(22, 24, 35, 0.34);

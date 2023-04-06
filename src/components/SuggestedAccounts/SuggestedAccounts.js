@@ -1,23 +1,26 @@
+import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import AccountItem from './AccountItem';
 import styles from './SuggestedAccounts.module.scss';
-import config from '~/config';
+// import config from '~/config';
 
 const cx = classNames.bind(styles);
 
-function SuggestedAccounts({ label }) {
+function SuggestedAccounts({ label, data = [] }) {
     return (
         <div className={cx('wrapper')}>
             <p className={cx('label')}>{label}</p>
-            <AccountItem to={config.routes.account} />
-            <AccountItem to={config.routes.account} />
-            <AccountItem to={config.routes.account} />
-            <AccountItem to={config.routes.account} />
-            <AccountItem to={config.routes.account} />
-            <AccountItem to={config.routes.account} />
+            {data.map((account) => (
+                <AccountItem key={account.id} data={account} />
+            ))}
             <p className={cx('more-btn')}>See all</p>
         </div>
     );
 }
+
+SuggestedAccounts.propTypes = {
+    label: PropTypes.string.isRequired,
+    data: PropTypes.array,
+};
 
 export default SuggestedAccounts;

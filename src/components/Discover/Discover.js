@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import styles from './Discover.modules.scss';
 import Button from '~/components/Button';
-import { HashtagIcon, MusicIcon } from '../Icons';
+import { HashtagIcon, MusicIcon } from '~/components/Icons';
 
 const cx = classNames.bind(styles);
 

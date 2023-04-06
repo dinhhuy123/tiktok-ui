@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical, faSignOut, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
+import HeadlessTippy from '@tippyjs/react/headless';
 import 'tippy.js/dist/tippy.css';
 
 import config from '~/config';
@@ -25,6 +27,7 @@ import {
 } from '~/components/Icons';
 import Image from '~/components/Image';
 import Search from '../Search';
+import Notifications from './Notifications';
 
 const cx = classNames.bind(styles);
 
@@ -63,8 +66,14 @@ const MENU_ITEMS = [
     },
 ];
 
-function Header({ onClick, className }) {
-    const currentUser = false;
+function Header({ onClick, className, currentUser }) {
+    const [notification, setNotification] = useState(false);
+
+    const newCurrentUser = localStorage.getItem('user');
+
+    if (newCurrentUser) {
+        currentUser = newCurrentUser;
+    }
 
     // Handle logic
     const handleMenuChange = (menuItem) => {
@@ -73,6 +82,15 @@ function Header({ onClick, className }) {
                 // Handle change language
                 break;
             default:
+        }
+
+        switch (menuItem.to) {
+            case '/logout':
+                localStorage.removeItem('user');
+                window.location.reload();
+                break;
+            default:
+                break;
         }
     };
 
@@ -121,11 +139,22 @@ function Header({ onClick, className }) {
                             <Button upload leftIcon={<FontAwesomeIcon icon={faPlus} />}>
                                 Upload
                             </Button>
-                            <Tippy delay={[0, 200]} content="Message" placement="bottom">
-                                <button className={cx('action-btn')}>
-                                    <MessageIcon />
-                                </button>
-                            </Tippy>
+                            <HeadlessTippy
+                                visible
+                                render={(attrs) => (
+                                    <div tabIndex="-1" {...attrs}>
+                                        <div className={cx('notifications')}>
+                                            <Notifications />
+                                        </div>
+                                    </div>
+                                )}
+                            >
+                                <Tippy delay={[0, 200]} content="Message" placement="bottom">
+                                    <button className={cx('action-btn')} onClick={() => setNotification(!notification)}>
+                                        <MessageIcon />
+                                    </button>
+                                </Tippy>
+                            </HeadlessTippy>
                             <Tippy delay={[0, 200]} content="Inbox" placement="bottom">
                                 <button className={cx('action-btn')}>
                                     <InboxIcon />

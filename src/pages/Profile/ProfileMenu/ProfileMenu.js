@@ -54,7 +54,6 @@ function ProfileMenu({ shareItems = [], moreItems = [], onChange = defaultFn }) 
                 </div>
             </Tippy>
             <Tippy
-                visible
                 interactive
                 delay={[0, 700]}
                 offset={[-110, 0]}

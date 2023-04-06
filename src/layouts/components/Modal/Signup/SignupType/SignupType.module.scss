@@ -41,31 +41,6 @@
     cursor: pointer;
 }
 
-.zone-code {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 12px;
-    height: 44px;
-}
-
-.vn-code {
-    font-size: 16px;
-    line-height: 1;
-    color: rgb(22, 24, 35);
-    margin-inline-end: 12px;
-}
-
-.turn-around {
-    transform: rotate(180deg);
-    transition-duration: 0.3s;
-}
-
-.turn-back {
-    transform: rotate(0deg);
-    transition-duration: 0.3s;
-}
-
 .phone-number {
     background: transparent;
     border-radius: 2px;
@@ -125,38 +100,6 @@
     cursor: not-allowed;
 }
 // Sign up with phone
-.email-container,
-.password-container {
-    margin-bottom: 9px;
-}
-
-.password-container {
-    position: relative;
-}
-
-.email-address,
-.password {
-    border-radius: 2px;
-    background-color: rgba(22, 24, 35, 0.06);
-    border: 1px solid rgba(22, 24, 35, 0.12);
-    padding-inline-start: 12px;
-    color: rgb(22, 24, 35);
-    line-height: 100%;
-    outline: none;
-    font-size: 1.6rem;
-    height: 44px;
-    caret-color: rgb(254, 44, 85);
-    width: 100%;
-}
-
-.hide-icon,
-.show-icon {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-}
-
 .condition {
     margin-bottom: 16px;
     display: flex;
@@ -178,4 +121,33 @@
     font-size: 1.2rem;
     line-height: 16px;
     display: inline;
+}
+
+.signup-btn {
+    border-radius: 4px;
+    border: none;
+    color: rgb(255, 255, 255);
+    background-color: rgb(254, 44, 85);
+    min-width: 120px;
+    min-height: 46px;
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: 700;
+    font-family: var(--font-family);
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    padding: 6px 8px;
+    user-select: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    width: 100%;
+    margin-top: 21px;
+}
+
+.disabled-btn {
+    border: none;
+    color: rgba(22, 24, 35, 0.34);
+    background-color: rgba(22, 24, 35, 0.06);
+    pointer-events: none;
 }

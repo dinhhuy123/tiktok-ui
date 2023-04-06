@@ -111,7 +111,7 @@ const SIGNUP_ITEMS = [
     },
 ];
 
-function Modal({ onClick }) {
+function Modal({ onClick, currentUser }) {
     const [changeType, setChangeType] = useState(false);
     const handledChange = (e) => {
         e.preventDefault();
@@ -122,19 +122,19 @@ function Modal({ onClick }) {
             <button onClick={onClick} className={cx('close-btn')}>
                 <ModalXmarkIcon />
             </button>
-            <div className={cx('modal-body')}>
-                <Menu items={MODAL_ITEMS} signup={SIGNUP_ITEMS} changeType={changeType} />
-                {changeType && (
-                    <div className={cx('agreeing')}>
-                        <p className={cx('agreeing-content')}>
-                            By continuing, you agree to TikTok’s
-                            <a href="/"> Terms of Service</a>
-                            and confirm that you have read TikTok’s
-                            <a href="/"> Privacy Policy</a>
-                        </p>
-                    </div>
-                )}
+            <div className={cx(`${!changeType ? 'modal-body-login' : 'modal-body-signup'}`)}>
+                <Menu items={MODAL_ITEMS} signup={SIGNUP_ITEMS} changeType={changeType} currentUser={currentUser} />
             </div>
+            {changeType && (
+                <div className={cx('agreeing')}>
+                    <p className={cx('agreeing-content')}>
+                        By continuing, you agree to TikTok’s
+                        <a href="/"> Terms of Service </a>
+                        and confirm that you have read TikTok’s
+                        <a href="/"> Privacy Policy</a>
+                    </p>
+                </div>
+            )}
             {changeType ? (
                 <div className={cx('modal-footer')}>
                     <p>Already have an account?</p>

@@ -2,6 +2,8 @@ import { useState } from 'react';
 import classNames from 'classnames/bind';
 import { faCaretDown, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import HeadlessTippy from '@tippyjs/react/headless';
+
 import styles from './SearchYear.module.scss';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 
@@ -151,42 +153,60 @@ const DAY_ITEMS = [
     },
 ];
 
-function SearchYear() {
+function SearchYear({ year, setYear }) {
     const [yearState, setYearState] = useState(false);
-    const [year, setYear] = useState('Year');
     const [active, setActive] = useState(false);
 
     const handleYear = (years) => {
         setYear(years.item);
         setActive(true);
+        setYearState(false);
+    };
+
+    const handleModal = (e) => {
+        e.stopPropagation();
+        setYearState(!yearState);
+    };
+
+    const handleHideYear = () => {
+        setYearState(false);
     };
 
     return (
         <div className={cx('year-container')}>
-            <div onClick={() => setYearState(!yearState)} className={cx('mo-da-ye')}>
-                <span className={cx(active ? 'active' : '')}>{year}</span>
-                <button className={cx('search-code-btn', yearState ? 'turn-around' : 'turn-back')}>
-                    <FontAwesomeIcon icon={faCaretDown} />
-                </button>
-            </div>
-            {yearState && (
-                <div className={cx('search-year')}>
-                    <PopperWrapper className={cx('popper-wrapper')}>
-                        <div className={cx('year-list-container')}>
-                            <ul className={cx('year-list')}>
-                                {DAY_ITEMS.map((items, index) => (
-                                    <li key={index} onClick={() => handleYear(items)}>
-                                        {items.item}
-                                        {year === items.item && (
-                                            <FontAwesomeIcon icon={faCheck} className={cx('check-icon')} />
-                                        )}
-                                    </li>
-                                ))}
-                            </ul>
+            <HeadlessTippy
+                interactive
+                offset={[-60, -50]}
+                visible={yearState}
+                render={(attrs) => (
+                    <div tabIndex="-1" {...attrs}>
+                        <div className={cx('search-year')}>
+                            <PopperWrapper className={cx('popper-wrapper', 'fix-padding')}>
+                                <div className={cx('year-list-container')}>
+                                    <ul className={cx('year-list')}>
+                                        {DAY_ITEMS.map((items, index) => (
+                                            <li key={index} onClick={() => handleYear(items)}>
+                                                {items.item}
+                                                {year === items.item && (
+                                                    <FontAwesomeIcon icon={faCheck} className={cx('check-icon')} />
+                                                )}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </PopperWrapper>
                         </div>
-                    </PopperWrapper>
+                    </div>
+                )}
+                onClickOutside={handleHideYear}
+            >
+                <div onClick={handleModal} className={cx('mo-da-ye')}>
+                    <span className={cx(active ? 'active' : '')}>{year}</span>
+                    <button className={cx('search-code-btn', yearState ? 'turn-around' : 'turn-back')}>
+                        <FontAwesomeIcon icon={faCaretDown} />
+                    </button>
                 </div>
-            )}
+            </HeadlessTippy>
         </div>
     );
 }

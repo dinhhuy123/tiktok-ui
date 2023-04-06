@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import classNames from 'classnames/bind';
-import styles from './SearchMonth.module.scss';
 import { faCaretDown, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import HeadlessTippy from '@tippyjs/react/headless';
+
+import styles from './SearchMonth.module.scss';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 
 const cx = classNames.bind(styles);
@@ -58,9 +60,8 @@ const MONTH_ITEMS = [
     },
 ];
 
-function SearchMonth({ hide, setHide }) {
+function SearchMonth({ month, setMonth }) {
     const [monthState, setMonthState] = useState(false);
-    const [month, setMonth] = useState('Month');
     const [active, setActive] = useState(false);
 
     const handleMonth = (months) => {
@@ -73,32 +74,46 @@ function SearchMonth({ hide, setHide }) {
         e.stopPropagation();
         setMonthState(!monthState);
     };
+
+    const handleHideMonth = () => {
+        setMonthState(false);
+    };
+
     return (
         <div className={cx('month-container')}>
-            <div onClick={handleModal} className={cx('mo-da-ye')}>
-                <span className={cx(active ? 'active' : '')}>{month}</span>
-                <button className={cx('search-code-btn', monthState ? 'turn-around' : 'turn-back')}>
-                    <FontAwesomeIcon icon={faCaretDown} />
-                </button>
-            </div>
-            {monthState && (
-                <div className={cx('search-month')}>
-                    <PopperWrapper className={cx('popper-wrapper')}>
-                        <div className={cx('month-list-container')}>
-                            <ul className={cx('month-list')}>
-                                {MONTH_ITEMS.map((items, index) => (
-                                    <li key={index} onClick={() => handleMonth(items)}>
-                                        {items.item}
-                                        {month === items.item && (
-                                            <FontAwesomeIcon icon={faCheck} className={cx('check-icon')} />
-                                        )}
-                                    </li>
-                                ))}
-                            </ul>
+            <HeadlessTippy
+                interactive
+                offset={[-60, -50]}
+                visible={monthState}
+                render={(attrs) => (
+                    <div tabIndex="-1" {...attrs}>
+                        <div className={cx('search-month')}>
+                            <PopperWrapper className={cx('popper-wrapper', 'fix-padding')}>
+                                <div className={cx('month-list-container')}>
+                                    <ul className={cx('month-list')}>
+                                        {MONTH_ITEMS.map((items, index) => (
+                                            <li key={index} onClick={() => handleMonth(items)}>
+                                                {items.item}
+                                                {month === items.item && (
+                                                    <FontAwesomeIcon icon={faCheck} className={cx('check-icon')} />
+                                                )}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </PopperWrapper>
                         </div>
-                    </PopperWrapper>
+                    </div>
+                )}
+                onClickOutside={handleHideMonth}
+            >
+                <div onClick={handleModal} className={cx('mo-da-ye')}>
+                    <span className={cx(active ? 'active' : '')}>{month}</span>
+                    <button className={cx('search-code-btn', monthState ? 'turn-around' : 'turn-back')}>
+                        <FontAwesomeIcon icon={faCaretDown} />
+                    </button>
                 </div>
-            )}
+            </HeadlessTippy>
         </div>
     );
 }

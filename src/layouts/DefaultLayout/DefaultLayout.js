@@ -11,13 +11,19 @@ const cx = classNames.bind(styles);
 
 function DefaultLayout({ children }) {
     const [modal, setModal] = useState(false);
+    const [hideItem, setHideItem] = useState(false);
+    const currentUser = false;
+    const handleChangeHideItem = () => {
+        setHideItem(!hideItem);
+    };
+
     return (
         <div className={cx('wrapper')}>
-            <Header onClick={() => setModal(true)} />
+            <Header onClick={() => setModal(true)} currentUser={currentUser} />
             {modal && (
-                <div className={cx('modal')}>
+                <div className={cx('modal')} onClick={handleChangeHideItem}>
                     <PopperWrapper className={cx('modal-wrapper')}>
-                        <Modal onClick={() => setModal(false)} />
+                        <Modal onClick={() => setModal(false)} currentUser={currentUser} />
                     </PopperWrapper>
                 </div>
             )}

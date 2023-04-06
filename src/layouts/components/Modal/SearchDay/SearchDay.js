@@ -2,6 +2,8 @@ import { useState } from 'react';
 import classNames from 'classnames/bind';
 import { faCaretDown, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import HeadlessTippy from '@tippyjs/react/headless';
+
 import styles from './SearchDay.module.scss';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 
@@ -103,43 +105,61 @@ const DAY_ITEMS = [
     },
 ];
 
-function SearchYear() {
+function SearchDay({ day, setDay }) {
     const [dayState, setDayState] = useState(false);
-    const [day, setDay] = useState('Day');
     const [active, setActive] = useState(false);
 
     const handleDay = (days) => {
         setDay(days.item);
         setActive(true);
+        setDayState(false);
+    };
+
+    const handleModal = (e) => {
+        e.stopPropagation();
+        setDayState(!dayState);
+    };
+
+    const handleHideDay = () => {
+        setDayState(false);
     };
     return (
         <div className={cx('day-container')}>
-            <div onClick={() => setDayState(!dayState)} className={cx('mo-da-ye')}>
-                <span className={cx(active ? 'active' : '')}>{day}</span>
-                <button className={cx('search-code-btn', dayState ? 'turn-around' : 'turn-back')}>
-                    <FontAwesomeIcon icon={faCaretDown} />
-                </button>
-            </div>
-            {dayState && (
-                <div className={cx('search-day')}>
-                    <PopperWrapper className={cx('popper-wrapper')}>
-                        <div className={cx('day-list-container')}>
-                            <ul className={cx('day-list')}>
-                                {DAY_ITEMS.map((items, index) => (
-                                    <li key={index} onClick={() => handleDay(items)}>
-                                        {items.item}
-                                        {day === items.item && (
-                                            <FontAwesomeIcon icon={faCheck} className={cx('check-icon')} />
-                                        )}
-                                    </li>
-                                ))}
-                            </ul>
+            <HeadlessTippy
+                interactive
+                offset={[-60, -50]}
+                visible={dayState}
+                render={(attrs) => (
+                    <div tabIndex="-1" {...attrs}>
+                        <div className={cx('search-day')}>
+                            <PopperWrapper className={cx('popper-wrapper', 'fix-padding')}>
+                                <div className={cx('day-list-container')}>
+                                    <ul className={cx('day-list')}>
+                                        {DAY_ITEMS.map((items, index) => (
+                                            <li key={index} onClick={() => handleDay(items)}>
+                                                {items.item}
+                                                {day === items.item && (
+                                                    <FontAwesomeIcon icon={faCheck} className={cx('check-icon')} />
+                                                )}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </PopperWrapper>
                         </div>
-                    </PopperWrapper>
+                    </div>
+                )}
+                onClickOutside={handleHideDay}
+            >
+                <div onClick={handleModal} className={cx('mo-da-ye')}>
+                    <span className={cx(active ? 'active' : '')}>{day}</span>
+                    <button className={cx('search-code-btn', dayState ? 'turn-around' : 'turn-back')}>
+                        <FontAwesomeIcon icon={faCaretDown} />
+                    </button>
                 </div>
-            )}
+            </HeadlessTippy>
         </div>
     );
 }
 
-export default SearchYear;
+export default SearchDay;

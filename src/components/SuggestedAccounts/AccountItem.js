@@ -6,37 +6,36 @@ import Tippy from '@tippyjs/react/headless';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 import styles from './SuggestedAccounts.module.scss';
 import AccountPreview from './AccountPreview/AccountPreview';
+import Image from '~/components/Image';
 
 const cx = classNames.bind(styles);
 
-function AccountItem({ to }) {
+function AccountItem({ data }) {
+    const preview = () => {
+        if (data.is_followed) {
+            return <></>;
+        }
+
+        return (
+            <div tabIndex="-1">
+                <PopperWrapper>
+                    <AccountPreview data={data} />
+                </PopperWrapper>
+            </div>
+        );
+    };
+
     return (
         <div>
-            <Tippy
-                interactive
-                appendTo={() => document.body}
-                delay={[800, 0]}
-                placement="bottom"
-                render={(attrs) => (
-                    <div tabIndex="-1" {...attrs}>
-                        <PopperWrapper>
-                            <AccountPreview />
-                        </PopperWrapper>
-                    </div>
-                )}
-            >
-                <NavLink to={to} className={cx('account-item')}>
-                    <img
-                        className={cx('avatar')}
-                        src="https://i.bloganchoi.com/bloganchoi.com/wp-content/uploads/2022/11/truong-tinh-nghi-6-8341-2850.jpeg?fit=645%2C20000&quality=95&ssl=1"
-                        alt=""
-                    />
+            <Tippy interactive appendTo={() => document.body} delay={[800, 0]} placement="bottom" render={preview}>
+                <NavLink to={`@${data.nickname}`} className={cx('account-item')}>
+                    <Image className={cx('avatar')} src={data.avatar} alt={data.nickname} />
                     <div className={cx('item-info')}>
                         <p className={cx('nickname')}>
-                            <strong>truongtinhnghi</strong>
-                            <FontAwesomeIcon className={cx('check')} icon={faCheckCircle} />
+                            <strong>{data.nickname}</strong>
+                            {data.tick && <FontAwesomeIcon className={cx('check')} icon={faCheckCircle} />}
                         </p>
-                        <p className={cx('name')}>Trương Tịnh Nghi</p>
+                        <p className={cx('name')}>{data.full_name}</p>
                     </div>
                 </NavLink>
             </Tippy>

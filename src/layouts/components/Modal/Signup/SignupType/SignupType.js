@@ -1,39 +1,100 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
+
 import styles from './SignupType.module.scss';
 import SearchCode from '~/layouts/components/Modal/SearchCode';
-import { HidePasswordIcon, ShowPasswordIcon } from '~/components/Icons';
+import User from './User/User';
+import Password from './Password/Password';
+import ConfirmPassword from './ConfirmPassword/ConfirmPassword';
+
+import axios from 'axios';
+
+import { createAccount } from '~/utils/HandleApi';
 
 const cx = classNames.bind(styles);
 
-function SignupType({ onClick, changeSignupType }) {
-    const [codeState, setCodeState] = useState(false);
-    const [passwordState, setPasswordState] = useState(false);
+const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
+const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,20}$/;
 
-    const handleChangeStatePassword = () => {
-        setPasswordState(!passwordState);
+function SignupType({ month, day, year, setSuccess }) {
+    const userRef = useRef();
+    const errRef = useRef();
+
+    const [user, setUser] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPwd, setConfirmPwd] = useState('');
+    const [changeSignupType, setChangeSignupType] = useState(false);
+
+    const [validName, setValidName] = useState(false);
+
+    const [validPwd, setValidPwd] = useState(false);
+
+    const [validMatch, setValidMatch] = useState(false);
+
+    const [errMsg, setErrMsg] = useState('');
+
+    const handleChangeSignupType = (e) => {
+        e.preventDefault();
+        setChangeSignupType(!changeSignupType);
     };
+
+    useEffect(() => {
+        userRef.current.focus();
+    }, []);
+
+    useEffect(() => {
+        const result = USER_REGEX.test(user);
+        console.log(result);
+        console.log(user);
+        setValidName(result);
+    }, [user]);
+
+    useEffect(() => {
+        const result = PWD_REGEX.test(password);
+        console.log(result);
+        console.log(password);
+        setValidPwd(result);
+        const match = password === confirmPwd;
+        setValidMatch(match);
+    }, [password, confirmPwd]);
+
+    useEffect(() => {
+        setErrMsg('');
+    }, [user, password, confirmPwd]);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const v1 = USER_REGEX.test(user);
+        const v2 = PWD_REGEX.test(password);
+        if (!v1 || !v2) {
+            setErrMsg('Invalid Entry');
+            return;
+        }
+        try {
+            createAccount(month, day, year, user, password, confirmPwd);
+            setSuccess(true);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
         <div className={cx('container')}>
-            {!changeSignupType ? (
-                <>
+            {changeSignupType ? (
+                <form>
                     <div className={cx('description')}>
                         Phone
-                        <a href="/signup/phone-or-email/email" className={cx('change-link')} onClick={onClick}>
+                        <a
+                            href="/signup/phone-or-email/email"
+                            className={cx('change-link')}
+                            onClick={handleChangeSignupType}
+                        >
                             Sign up with email
                         </a>
                     </div>
                     <div className={cx('phone-container')}>
                         <div className={cx('code-container')}>
-                            <div onClick={() => setCodeState(!codeState)} className={cx('zone-code')}>
-                                <span className={cx('vn-code')}>VN +84</span>
-                                <button className={cx('search-code-btn', codeState ? 'turn-around' : 'turn-back')}>
-                                    <FontAwesomeIcon icon={faCaretDown} />
-                                </button>
-                            </div>
-                            {codeState && <SearchCode />}
+                            <SearchCode />
                         </div>
                         <input name="mobile" className={cx('phone-number')} placeholder="Phone number" />
                     </div>
@@ -43,41 +104,30 @@ function SignupType({ onClick, changeSignupType }) {
                         </div>
                         <button className={cx('code-btn', 'disabled-code-btn')}>Send code</button>
                     </div>
-                </>
+                    <button onClick={handleSubmit} type="submit" className={cx('signup-btn')}>
+                        Signup
+                    </button>
+                </form>
             ) : (
-                <>
+                <form>
                     <div className={cx('description')}>
                         Email
-                        <a href="/signup/phone-or-email/phone" className={cx('change-link')} onClick={onClick}>
+                        <a
+                            href="/signup/phone-or-email/phone"
+                            className={cx('change-link')}
+                            onClick={handleChangeSignupType}
+                        >
                             Sign up with phone
                         </a>
                     </div>
-                    <div className={cx('email-container')}>
-                        <input name="email" className={cx('email-address')} placeholder="Email address" required />
-                    </div>
-                    <div className={cx('password-container')}>
-                        <input
-                            name="password"
-                            type={passwordState ? 'text' : 'password'}
-                            className={cx('password')}
-                            placeholder="Password"
-                        />
-                        {passwordState ? (
-                            <button onClick={handleChangeStatePassword}>
-                                <HidePasswordIcon className={cx('hide-icon')} />
-                            </button>
-                        ) : (
-                            <button onClick={handleChangeStatePassword}>
-                                <ShowPasswordIcon className={cx('show-icon')} />
-                            </button>
-                        )}
-                    </div>
-                    <div className={cx('send-code')}>
-                        <div className={cx('input-container')}>
-                            <input name="code" className={cx('input-code')} placeholder="Enter 6-digit code" />
-                        </div>
-                        <button className={cx('code-btn', 'disabled-code-btn')}>Send code</button>
-                    </div>
+                    <User user={user} setUser={setUser} userRef={userRef} validName={validName} />
+                    <Password password={password} setPassword={setPassword} validPwd={validPwd} />
+                    <ConfirmPassword
+                        confirmPwd={confirmPwd}
+                        setConfirmPwd={setConfirmPwd}
+                        password={password}
+                        validMatch={validMatch}
+                    />
                     <div className={cx('condition')}>
                         <div className={cx('check-condition')}>
                             <input type="checkbox" className={cx('checkbox')} />
@@ -87,7 +137,14 @@ function SignupType({ onClick, changeSignupType }) {
                             your email
                         </p>
                     </div>
-                </>
+                    <button
+                        onClick={handleSubmit}
+                        type="submit"
+                        className={cx('signup-btn', `${validName && validPwd && validMatch ? '' : 'disabled-btn'}`)}
+                    >
+                        Signup
+                    </button>
+                </form>
             )}
         </div>
     );
