@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
 
 import styles from './SignupType.module.scss';
@@ -7,9 +9,10 @@ import User from './User/User';
 import Password from './Password/Password';
 import ConfirmPassword from './ConfirmPassword/ConfirmPassword';
 
-import axios from 'axios';
+// import axios from 'axios';
 
-import { createAccount } from '~/utils/HandleApi';
+// import { createAccount } from '~/utils/HandleApi';
+import { registerUser } from '~/redux/apiRequest';
 
 const cx = classNames.bind(styles);
 
@@ -18,7 +21,7 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,20}$/;
 
 function SignupType({ month, day, year, setSuccess }) {
     const userRef = useRef();
-    const errRef = useRef();
+    // const errRef = useRef();
 
     const [user, setUser] = useState('');
     const [password, setPassword] = useState('');
@@ -32,6 +35,9 @@ function SignupType({ month, day, year, setSuccess }) {
     const [validMatch, setValidMatch] = useState(false);
 
     const [errMsg, setErrMsg] = useState('');
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleChangeSignupType = (e) => {
         e.preventDefault();
@@ -68,11 +74,18 @@ function SignupType({ month, day, year, setSuccess }) {
         const v2 = PWD_REGEX.test(password);
         if (!v1 || !v2) {
             setErrMsg('Invalid Entry');
+            alert(errMsg);
             return;
         }
+        const newUser = {
+            month,
+            day,
+            year,
+            user,
+            password,
+        };
         try {
-            createAccount(month, day, year, user, password, confirmPwd);
-            setSuccess(true);
+            registerUser(newUser, dispatch, navigate);
         } catch (error) {
             console.log(error);
         }

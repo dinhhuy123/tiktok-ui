@@ -14,10 +14,6 @@ function Home() {
     const [noMoreVideo, setNoMoreVideo] = useState(false);
 
     useEffect(() => {
-        const currentUser = JSON.parse(localStorage.getItem('user'));
-        console.log(currentUser);
-        // const accessToken = currentUser && currentUser.meta.token ? currentUser.meta.token : '';
-
         userService
             .getVideos({ type: 'for-you', page })
             .then((res) => {
@@ -29,6 +25,8 @@ function Home() {
                 }
             })
             .catch((err) => console.log(err));
+        // .getVideos()
+        // .then((res) => console.log(res));
     }, [page]);
 
     return (

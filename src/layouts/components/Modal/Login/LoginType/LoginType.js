@@ -1,12 +1,15 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useContext } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
-import styles from './LoginType.module.scss';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import styles from './LoginType.module.scss';
 import SearchCode from '~/layouts/components/Modal/SearchCode';
 import { HidePasswordIcon, ShowPasswordIcon } from '~/components/Icons';
-
-import { loginAccount } from '~/utils/HandleApi';
+// import { loginAccount } from '~/utils/HandleApi';
+import { loginUser } from '~/redux/apiRequest';
+import { ModalContext } from '~/layouts/DefaultLayout/DefaultLayout';
 
 const cx = classNames.bind(styles);
 
@@ -14,12 +17,16 @@ function LoginWithCode({ onClick, changeLoginType, onForgot }) {
     const [codeState, setCodeState] = useState(false);
     const [passwordState, setPasswordState] = useState(false);
     const [codeToPassword, setCodeToPassword] = useState(false);
-    const [accessToken, setAccessToken] = useState('');
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const userRef = useRef();
+
+    const setModal = useContext(ModalContext);
 
     useEffect(() => {
         userRef.current.focus();
@@ -36,14 +43,13 @@ function LoginWithCode({ onClick, changeLoginType, onForgot }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        const newUser = {
+            user: username,
+            password: password,
+        };
 
-        try {
-            loginAccount(username, password, setAccessToken);
-            setUsername('');
-            setPassword('');
-        } catch (error) {
-            console.log(error);
-        }
+        loginUser(newUser, dispatch, navigate);
+        setModal(false);
     };
 
     return (
@@ -120,7 +126,7 @@ function LoginWithCode({ onClick, changeLoginType, onForgot }) {
                     )}
                 </>
             ) : (
-                <form>
+                <form onSubmit={handleSubmit}>
                     <div className={cx('description')}>
                         Email or username
                         <a href="/login/phone-or-email/phone" className={cx('change-link')} onClick={onClick}>
@@ -159,9 +165,7 @@ function LoginWithCode({ onClick, changeLoginType, onForgot }) {
                     <a href="/" className={cx('change-link')}>
                         Forgot password?
                     </a>
-                    <button onClick={handleSubmit} className={cx('login-btn')}>
-                        Log in
-                    </button>
+                    <button className={cx('login-btn')}>Log in</button>
                 </form>
             )}
         </>

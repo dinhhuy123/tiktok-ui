@@ -22,8 +22,7 @@ const createAccount = async (month, day, year, user, password, confirmPwd) => {
                 withCredentials: true,
             },
         );
-        console.log(response.data);
-        console.log(response.accessToken);
+        console.log(response);
         console.log(JSON.stringify(response));
     } catch (error) {
         console.log(error);
@@ -36,12 +35,25 @@ const loginAccount = async (user, password) => {
             headers: { 'Content-Type': 'application/json' },
             withCredentials: true,
         });
+        // if (response.data.accessToken) {
+        //     localStorage.setItem('user', JSON.stringify(response.data));
+        // }
+        console.log(response);
         console.log(response.data);
-        console.log(response.data.accessToken);
-        console.log(JSON.stringify(response.data));
     } catch (error) {
         console.log(error);
     }
 };
 
-export { getAllAccounts, createAccount, loginAccount };
+const refreshToken = async () => {
+    try {
+        const res = await axios.post(`${baseUrl}/refresh`, {
+            withCredentials: true,
+        });
+        return res.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export { getAllAccounts, createAccount, loginAccount, refreshToken };

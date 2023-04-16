@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical, faSignOut, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
 import HeadlessTippy from '@tippyjs/react/headless';
 import 'tippy.js/dist/tippy.css';
@@ -28,6 +28,8 @@ import {
 import Image from '~/components/Image';
 import Search from '../Search';
 import Notifications from './Notifications';
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutUser } from '~/redux/apiRequest';
 
 const cx = classNames.bind(styles);
 
@@ -66,14 +68,43 @@ const MENU_ITEMS = [
     },
 ];
 
-function Header({ onClick, className, currentUser }) {
+const USERS_MENU = [
+    {
+        icon: <ViewProfileIcon />,
+        title: 'View profile',
+        to: '/profile',
+    },
+    {
+        icon: <GetCoinsIcon />,
+        title: 'Get coins',
+        to: '/coin',
+    },
+    {
+        icon: <LiveStudioIcon />,
+        title: 'LIVE Studio',
+        to: '/live',
+    },
+    {
+        icon: <SettingIcon />,
+        title: 'Setting',
+        to: '/settings',
+    },
+    ...MENU_ITEMS,
+    {
+        icon: <FontAwesomeIcon icon={faSignOut} />,
+        title: 'Log out',
+        to: '/logout',
+        separate: true,
+    },
+];
+
+function Header({ onClick, className, currentUser, axiosJWT }) {
+    const user = useSelector((state) => state.auth.login?.currentUser);
+    const accessToken = user?.accessToken;
+    const id = user?._id;
     const [notification, setNotification] = useState(false);
-
-    const newCurrentUser = localStorage.getItem('user');
-
-    if (newCurrentUser) {
-        currentUser = newCurrentUser;
-    }
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     // Handle logic
     const handleMenuChange = (menuItem) => {
@@ -86,43 +117,13 @@ function Header({ onClick, className, currentUser }) {
 
         switch (menuItem.to) {
             case '/logout':
-                localStorage.removeItem('user');
-                window.location.reload();
+                logoutUser(dispatch, id, navigate, accessToken, axiosJWT);
+                // window.location.reload();
                 break;
             default:
                 break;
         }
     };
-
-    const userMenu = [
-        {
-            icon: <ViewProfileIcon />,
-            title: 'View profile',
-            to: '/profile',
-        },
-        {
-            icon: <GetCoinsIcon />,
-            title: 'Get coins',
-            to: '/coin',
-        },
-        {
-            icon: <LiveStudioIcon />,
-            title: 'LIVE Studio',
-            to: '/live',
-        },
-        {
-            icon: <SettingIcon />,
-            title: 'Setting',
-            to: '/settings',
-        },
-        ...MENU_ITEMS,
-        {
-            icon: <FontAwesomeIcon icon={faSignOut} />,
-            title: 'Log out',
-            to: '/logout',
-            separate: true,
-        },
-    ];
 
     return (
         <header className={cx('wrapper')}>
@@ -161,6 +162,13 @@ function Header({ onClick, className, currentUser }) {
                                     <span className={cx('badge')}>12</span>
                                 </button>
                             </Tippy>
+                            <Menu items={USERS_MENU} onChange={handleMenuChange}>
+                                <Image
+                                    className={cx('user-avatar')}
+                                    src="https://pdp.edu.vn/wp-content/uploads/2021/01/hinh-anh-girl-xinh-toc-ngan-de-thuong.jpg"
+                                    alt="Nguyen Van A"
+                                />
+                            </Menu>
                         </>
                     ) : (
                         <>
@@ -170,9 +178,14 @@ function Header({ onClick, className, currentUser }) {
                             <Button primary onClick={onClick}>
                                 Log in
                             </Button>
+                            <Menu items={MENU_ITEMS} onChange={handleMenuChange}>
+                                <button className={cx('more-btn')}>
+                                    <FontAwesomeIcon icon={faEllipsisVertical} />
+                                </button>
+                            </Menu>
                         </>
                     )}
-                    <Menu items={currentUser ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
+                    {/* <Menu items={currentUser ? USERS_MENU : MENU_ITEMS} onChange={handleMenuChange}>
                         {currentUser ? (
                             <Image
                                 className={cx('user-avatar')}
@@ -184,7 +197,7 @@ function Header({ onClick, className, currentUser }) {
                                 <FontAwesomeIcon icon={faEllipsisVertical} />
                             </button>
                         )}
-                    </Menu>
+                    </Menu> */}
                 </div>
             </div>
         </header>

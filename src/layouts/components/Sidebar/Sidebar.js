@@ -45,7 +45,7 @@ function Sidebar({ className, state, onClick, currentUser }) {
     }, []);
     return (
         <aside className={cx('wrapper', className, state ? 'narrow' : '')}>
-            {true ? (
+            {currentUser ? (
                 <>
                     <Menu>
                         <MenuItem

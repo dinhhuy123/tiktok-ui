@@ -1,3 +1,4 @@
+// import axios from 'axios';
 import * as httpRequest from '~/utils/httpRequest';
 
 export const getSuggestedUsers = async (page, perPage) => {
