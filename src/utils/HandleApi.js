@@ -35,9 +35,6 @@ const loginAccount = async (user, password) => {
             headers: { 'Content-Type': 'application/json' },
             withCredentials: true,
         });
-        // if (response.data.accessToken) {
-        //     localStorage.setItem('user', JSON.stringify(response.data));
-        // }
         console.log(response);
         console.log(response.data);
     } catch (error) {
@@ -45,15 +42,4 @@ const loginAccount = async (user, password) => {
     }
 };
 
-const refreshToken = async () => {
-    try {
-        const res = await axios.post(`${baseUrl}/refresh`, {
-            withCredentials: true,
-        });
-        return res.data;
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-export { getAllAccounts, createAccount, loginAccount, refreshToken };
+export { getAllAccounts, createAccount, loginAccount };

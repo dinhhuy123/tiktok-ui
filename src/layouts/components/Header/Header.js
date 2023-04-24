@@ -30,6 +30,8 @@ import Search from '../Search';
 import Notifications from './Notifications';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '~/redux/apiRequest';
+import { createInstance } from '~/createInstance';
+import { loginSuccess } from '~/redux/authSlice';
 
 const cx = classNames.bind(styles);
 
@@ -98,13 +100,15 @@ const USERS_MENU = [
     },
 ];
 
-function Header({ onClick, className, currentUser, axiosJWT }) {
+function Header({ onClick, className, currentUser }) {
     const user = useSelector((state) => state.auth.login?.currentUser);
     const accessToken = user?.accessToken;
     const id = user?._id;
     const [notification, setNotification] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    let axiosJWT = createInstance(user, dispatch, loginSuccess);
 
     // Handle logic
     const handleMenuChange = (menuItem) => {

@@ -28,7 +28,7 @@ function AccountItem({ data }) {
     return (
         <div>
             <Tippy interactive appendTo={() => document.body} delay={[800, 0]} placement="bottom" render={preview}>
-                <NavLink to={`@${data.nickname}`} className={cx('account-item')}>
+                <NavLink to={`/users/@${data.nickname}`} className={cx('account-item')}>
                     <Image className={cx('avatar')} src={data.avatar} alt={data.nickname} />
                     <div className={cx('item-info')}>
                         <p className={cx('nickname')}>

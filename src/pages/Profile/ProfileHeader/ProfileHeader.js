@@ -87,22 +87,18 @@ const MORE_ITEMS = [
     },
 ];
 
-function ProfileHeader() {
+function ProfileHeader({ userProfile }) {
     return (
         <div className={cx('profile-header')}>
             <div>
                 <div className={cx('header')}>
-                    <img
-                        className={cx('avatar')}
-                        src="https://i.bloganchoi.com/bloganchoi.com/wp-content/uploads/2022/11/truong-tinh-nghi-6-8341-2850.jpeg?fit=645%2C20000&quality=95&ssl=1"
-                        alt=""
-                    />
+                    <img className={cx('avatar')} src={userProfile.avatar} alt="" />
                     <div className={cx('title-container')}>
                         <p className={cx('nickname')}>
-                            <strong>truongtinhnghi</strong>
+                            <strong>{userProfile.nickname}</strong>
                             <FontAwesomeIcon className={cx('check')} icon={faCheckCircle} />
                         </p>
-                        <p className={cx('name')}>Trương Tịnh Nghi</p>
+                        <p className={cx('name')}>{userProfile.first_name + ' ' + userProfile.last_name}</p>
                         <Button className={cx('follow-btn')} primary widen>
                             Follow
                         </Button>
@@ -112,19 +108,19 @@ function ProfileHeader() {
                 <div className={cx('body')}>
                     <div className={cx('analytics')}>
                         <div className={cx('item')}>
-                            <strong className={cx('value')}>8.2M</strong>
+                            <strong className={cx('value')}>{userProfile.followings_count}</strong>
                             <span className={cx('label')}>Following</span>
                         </div>
                         <div className={cx('item')}>
-                            <strong className={cx('value')}>8.2M</strong>
-                            <span className={cx('label')}>Likes</span>
+                            <strong className={cx('value')}>{userProfile.followers_count}</strong>
+                            <span className={cx('label')}>Followers</span>
                         </div>
                         <div className={cx('item')}>
-                            <strong className={cx('value')}>8.2M</strong>
+                            <strong className={cx('value')}>{userProfile.likes_count}</strong>
                             <span className={cx('label')}>Likes</span>
                         </div>
                     </div>
-                    <p>No bio yet.</p>
+                    {!!userProfile.bio ? <p>{userProfile.bio}</p> : <p>No bio yet.</p>}
                 </div>
             </div>
             <ProfileMenu shareItems={SHARE_ITEMS} moreItems={MORE_ITEMS} />

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
-import { refreshToken } from './utils/HandleApi';
+import { refreshToken } from './redux/apiRequest';
 
 export const createInstance = (user, dispatch, stateSuccess) => {
     const newInstance = axios.create();
@@ -10,6 +10,7 @@ export const createInstance = (user, dispatch, stateSuccess) => {
             const decodedToken = jwt_decode(user?.accessToken);
             if (decodedToken.exp < date.getTime() / 1000) {
                 const data = await refreshToken();
+                console.log(data);
                 const refreshUser = {
                     ...user,
                     accessToken: data.accessToken,

@@ -1,6 +1,5 @@
-import axios from 'axios';
 import { useState, createContext } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
@@ -9,8 +8,6 @@ import Modal from '~/layouts/components/Modal';
 import Sidebar from '~/layouts/components/Sidebar';
 import styles from './DefaultLayout.module.scss';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
-import { loginSuccess } from '~/redux/authSlice';
-import { createInstance } from '~/createInstance';
 
 const cx = classNames.bind(styles);
 
@@ -24,14 +21,11 @@ function DefaultLayout({ children }) {
     };
     const user = useSelector((state) => state.auth.login?.currentUser);
     const currentUser = !!user ? true : false;
-    const dispatch = useDispatch();
-
-    let axiosJWT = createInstance(user, dispatch, loginSuccess);
 
     return (
         <ModalContext.Provider value={setModal}>
             <div className={cx('wrapper')}>
-                <Header onClick={() => setModal(true)} currentUser={currentUser} axiosJWT={axiosJWT} />
+                <Header onClick={() => setModal(true)} currentUser={currentUser} />
                 {modal && (
                     <div className={cx('modal')} onClick={handleChangeHideItem}>
                         <PopperWrapper className={cx('modal-wrapper')}>
