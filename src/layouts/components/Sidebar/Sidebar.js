@@ -23,26 +23,42 @@ const cx = classNames.bind(styles);
 const INIT_PAGE = 1;
 const PER_PAGE = 5;
 
-function Sidebar({ className, state, onClick, currentUser }) {
+function Sidebar({ className, state, onClick }) {
+    const currentUser = JSON.parse(localStorage.getItem('user'));
+    const accessToken = currentUser && currentUser.meta.token ? currentUser.meta.token : '';
+
     const [suggestedUsers, setSuggestedUsers] = useState([]);
-    // const [followingUsers, setFollowingUsers] = useState([]);
+    const [followingUsers, setFollowingUsers] = useState([]);
+    const [perPage, setPerPage] = useState(PER_PAGE);
 
     useEffect(() => {
         userService
-            .getSuggestedUsers({ page: INIT_PAGE, per_page: PER_PAGE })
+            .getSuggestedUsers({ page: INIT_PAGE, perPage: perPage })
             .then((data) => {
                 console.log(data);
                 setSuggestedUsers(data);
             })
             .catch((error) => console.log(error));
+    }, [perPage]);
 
-        // userService
-        //     .getFollowingUsers({ page: INIT_PAGE })
-        //     .then((data) => {
-        //         setFollowingUsers(data);
-        //     })
-        //     .catch((error) => console.log(error));
-    }, []);
+    useEffect(() => {
+        userService
+            .getFollowingUsers({ page: INIT_PAGE, accessToken })
+            .then((data) => {
+                console.log(data);
+                setFollowingUsers(data);
+            })
+            .catch((error) => console.log(error));
+    }, [accessToken]);
+
+    const moreSugUsers = () => {
+        if (suggestedUsers.length === PER_PAGE) {
+            setPerPage(PER_PAGE * 4);
+        } else {
+            setPerPage(PER_PAGE);
+        }
+    };
+
     return (
         <aside className={cx('wrapper', className, state ? 'narrow' : '')}>
             {currentUser ? (
@@ -67,8 +83,13 @@ function Sidebar({ className, state, onClick, currentUser }) {
                             activeIcon={<LiveActiveIcon />}
                         />
                     </Menu>
-                    <SuggestedAccounts label="Suggest accounts" data={suggestedUsers} />
-                    {/* <SuggestedAccounts label="Following accounts" data={followingUsers} /> */}
+                    <SuggestedAccounts
+                        moreTitle={suggestedUsers.length === PER_PAGE ? 'See all' : 'See less'}
+                        label="Suggest accounts"
+                        data={suggestedUsers}
+                        moreSugUserFunc={moreSugUsers}
+                    />
+                    <SuggestedAccounts moreTitle="See all" label="Following accounts" data={followingUsers} />
                     <Discover label="Discover" className={cx(state ? 'narrow-title' : '')} />
                     <Privacy />
                 </>

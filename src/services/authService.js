@@ -10,3 +10,15 @@ export const login = async (email, password) => {
         console.log(error);
     }
 };
+
+export const register = async (type, email, password) => {
+    try {
+        return await httpRequest.post('auth/register', {
+            type,
+            email,
+            password,
+        });
+    } catch (error) {
+        console.log(error);
+    }
+};

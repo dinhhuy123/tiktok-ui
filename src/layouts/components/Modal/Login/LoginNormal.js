@@ -7,7 +7,7 @@ import ForgotPassword from '~/layouts/components/Modal/ForgotPassword';
 
 const cx = classNames.bind(styles);
 
-function Login({ title, currentUser }) {
+function Login({ title }) {
     const [changeLoginType, setChangeLoginType] = useState(false);
     const [forgotPassword, setForgotPassword] = useState(false);
 

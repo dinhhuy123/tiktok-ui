@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical, faSignOut, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
 import HeadlessTippy from '@tippyjs/react/headless';
 import 'tippy.js/dist/tippy.css';
@@ -28,10 +28,6 @@ import {
 import Image from '~/components/Image';
 import Search from '../Search';
 import Notifications from './Notifications';
-import { useDispatch, useSelector } from 'react-redux';
-import { logoutUser } from '~/redux/apiRequest';
-import { createInstance } from '~/createInstance';
-import { loginSuccess } from '~/redux/authSlice';
 
 const cx = classNames.bind(styles);
 
@@ -100,15 +96,10 @@ const USERS_MENU = [
     },
 ];
 
-function Header({ onClick, className, currentUser }) {
-    const user = useSelector((state) => state.auth.login?.currentUser);
-    const accessToken = user?.accessToken;
-    const id = user?._id;
-    const [notification, setNotification] = useState(false);
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+function Header({ onClick, className }) {
+    const currentUser = JSON.parse(localStorage.getItem('user'));
 
-    let axiosJWT = createInstance(user, dispatch, loginSuccess);
+    const [notification, setNotification] = useState(false);
 
     // Handle logic
     const handleMenuChange = (menuItem) => {
@@ -121,8 +112,8 @@ function Header({ onClick, className, currentUser }) {
 
         switch (menuItem.to) {
             case '/logout':
-                logoutUser(dispatch, id, navigate, accessToken, axiosJWT);
-                // window.location.reload();
+                localStorage.removeItem('user');
+                window.location.reload();
                 break;
             default:
                 break;
@@ -141,7 +132,7 @@ function Header({ onClick, className, currentUser }) {
                 <div className={cx('actions')}>
                     {currentUser ? (
                         <>
-                            <Button upload leftIcon={<FontAwesomeIcon icon={faPlus} />}>
+                            <Button to="/upload" upload leftIcon={<FontAwesomeIcon icon={faPlus} />}>
                                 Upload
                             </Button>
                             <HeadlessTippy

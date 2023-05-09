@@ -1,7 +1,7 @@
 // import axios from 'axios';
 import * as httpRequest from '~/utils/httpRequest';
 
-export const getSuggestedUsers = async (page, perPage) => {
+export const getSuggestedUsers = async ({ page, perPage }) => {
     try {
         const res = await httpRequest.get(`users/suggested`, {
             params: {
@@ -15,11 +15,11 @@ export const getSuggestedUsers = async (page, perPage) => {
     }
 };
 
-export const getFollowingUsers = async (page) => {
+export const getFollowingUsers = async ({ page, accessToken }) => {
     try {
         const res = await httpRequest.get(`me/followings`, {
             headers: {
-                Authorization: `Bearer ${process.env.REACT_AUTH_TOKEN}`,
+                Authorization: `Bearer ${accessToken}`,
             },
             params: {
                 page,
@@ -53,6 +53,54 @@ export const getVideos = async ({ type, page, accessToken = '' }) => {
             params: {
                 type,
                 page,
+            },
+        });
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const followAnUser = async ({ userId, accessToken }) => {
+    try {
+        return await httpRequest.post(`users/${userId}/follow`, [], {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const unFollowAnUser = async ({ userId, accessToken }) => {
+    try {
+        return await httpRequest.post(`users/${userId}/unfollow`, [], {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const likeVideo = async ({ userId, accessToken }) => {
+    try {
+        return await httpRequest.post(`users/${userId}/like`, [], {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const unLikeVideo = async ({ userId, accessToken }) => {
+    try {
+        return await httpRequest.post(`users/${userId}/unlike`, [], {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
             },
         });
     } catch (error) {

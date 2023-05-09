@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
+import { Virtuoso } from 'react-virtuoso';
 import styles from './Home.module.scss';
 import Video from '~/layouts/components/Video';
 import * as userService from '~/services/userService';
@@ -13,28 +14,52 @@ function Home() {
     const [page, setPage] = useState(INIT_PAGE);
     const [noMoreVideo, setNoMoreVideo] = useState(false);
 
+    const currentUser = JSON.parse(localStorage.getItem('user'));
+    const accessToken = currentUser && currentUser.meta.token ? currentUser.meta.token : '';
+
+    const loadMoreVideos = useCallback(() => {
+        return setTimeout(() => {
+            userService
+                .getVideos({ type: 'for-you', page, accessToken: accessToken })
+                .then((res) => {
+                    if (Array.isArray(res.data)) {
+                        setVideos((prev) => [...prev, ...res.data]);
+                        setPage((prev) => prev + 1);
+                    }
+                    if (res.data.length === 0 || page === res.meta.pagination.total) {
+                        setNoMoreVideo(true);
+                    }
+                })
+                .catch((err) => console.log(err));
+        }, 300);
+    }, [page, accessToken]);
+
     useEffect(() => {
-        userService
-            .getVideos({ type: 'for-you', page })
-            .then((res) => {
-                if (Array.isArray(res.data)) {
-                    setVideos(res.data);
-                }
-                if (res.data.length === 0 || page === res.meta.pagination.total) {
-                    setNoMoreVideo(true);
-                }
-            })
-            .catch((err) => console.log(err));
-        // .getVideos()
-        // .then((res) => console.log(res));
-    }, [page]);
+        const timeForLoading = loadMoreVideos();
+        return () => clearTimeout(timeForLoading);
+    }, []);
 
     return (
         <div className={cx('home-page')}>
-            {videos.map((video) => (
-                <Video key={video.id} video={video} />
-            ))}
-            {noMoreVideo && <p className={cx('no-more-video')}>No more video to load</p>}
+            <Virtuoso
+                data={videos}
+                useWindowScroll
+                endReached={() => {
+                    if (!noMoreVideo) {
+                        loadMoreVideos();
+                    }
+                }}
+                itemContent={(index, video) => <Video key={index} video={video} />}
+                components={{
+                    Footer: () => {
+                        return (
+                            <div className={cx('footer')}>
+                                {noMoreVideo && <p className={cx('no-more-video')}>No more video to load</p>}
+                            </div>
+                        );
+                    },
+                }}
+            />
         </div>
     );
 }

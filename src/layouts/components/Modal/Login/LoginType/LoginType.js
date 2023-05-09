@@ -1,6 +1,4 @@
-import { useEffect, useRef, useState, useContext } from 'react';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,8 +6,7 @@ import styles from './LoginType.module.scss';
 import SearchCode from '~/layouts/components/Modal/SearchCode';
 import { HidePasswordIcon, ShowPasswordIcon } from '~/components/Icons';
 // import { loginAccount } from '~/utils/HandleApi';
-import { loginUser } from '~/redux/apiRequest';
-import { ModalContext } from '~/layouts/DefaultLayout/DefaultLayout';
+import { login } from '~/services/authService';
 
 const cx = classNames.bind(styles);
 
@@ -21,12 +18,7 @@ function LoginWithCode({ onClick, changeLoginType, onForgot }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-
     const userRef = useRef();
-
-    const setModal = useContext(ModalContext);
 
     useEffect(() => {
         userRef.current.focus();
@@ -41,15 +33,20 @@ function LoginWithCode({ onClick, changeLoginType, onForgot }) {
         setCodeToPassword(!codeToPassword);
     };
 
-    const handleSubmit = (e) => {
+    const handleLogin = (e) => {
         e.preventDefault();
-        const newUser = {
-            user: username,
-            password: password,
-        };
-
-        loginUser(newUser, dispatch, navigate);
-        setModal(false);
+        login(username, password)
+            .then((data) => {
+                if (data.meta && data.meta.token) {
+                    localStorage.setItem('user', JSON.stringify(data));
+                    window.location.reload();
+                } else {
+                    alert('Username or password is invalid! Please try again');
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 
     return (
@@ -126,7 +123,7 @@ function LoginWithCode({ onClick, changeLoginType, onForgot }) {
                     )}
                 </>
             ) : (
-                <form onSubmit={handleSubmit}>
+                <div>
                     <div className={cx('description')}>
                         Email or username
                         <a href="/login/phone-or-email/phone" className={cx('change-link')} onClick={onClick}>
@@ -165,8 +162,10 @@ function LoginWithCode({ onClick, changeLoginType, onForgot }) {
                     <a href="/" className={cx('change-link')}>
                         Forgot password?
                     </a>
-                    <button className={cx('login-btn')}>Log in</button>
-                </form>
+                    <button className={cx('login-btn')} onClick={handleLogin}>
+                        Log in
+                    </button>
+                </div>
             )}
         </>
     );

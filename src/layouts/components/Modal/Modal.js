@@ -123,7 +123,7 @@ function Modal({ onClick, currentUser }) {
                 <ModalXmarkIcon />
             </button>
             <div className={cx(`${!changeType ? 'modal-body-login' : 'modal-body-signup'}`)}>
-                <Menu items={MODAL_ITEMS} signup={SIGNUP_ITEMS} changeType={changeType} currentUser={currentUser} />
+                <Menu items={MODAL_ITEMS} signup={SIGNUP_ITEMS} changeType={changeType} />
             </div>
             {changeType && (
                 <div className={cx('agreeing')}>
