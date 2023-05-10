@@ -1,7 +1,10 @@
 .container {
     margin-top: var(--default-layout-header-height);
+    display: flex;
 }
 
 .content {
     flex: 1 1;
+    margin-left: 250px;
+    padding: 32px 24px;
 }

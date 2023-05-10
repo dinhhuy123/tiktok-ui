@@ -8,7 +8,7 @@ const cx = classNames.bind(styles);
 
 function Discover({ label, className }) {
     return (
-        <div className={cx('wrapper')}>
+        <div className={cx('discoverWrapper')}>
             <p className={cx('label')}>{label}</p>
             <div className={cx('discover-btn')}>
                 <Button rounded className={cx('btn')} leftIcon={<HashtagIcon />}>
