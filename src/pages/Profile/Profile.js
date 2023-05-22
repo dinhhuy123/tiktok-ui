@@ -9,29 +9,30 @@ import * as userService from '~/services/userService';
 const cx = classNames.bind(styles);
 
 function Profile() {
-    const [userProfile, setUserProfile] = useState({});
-    const { nickname } = useParams();
-    console.log(nickname);
-    useEffect(() => {
-        if (nickname) {
-            const currentUser = JSON.parse(localStorage.getItem('user'));
-            const accessToken = currentUser && currentUser.meta.token ? currentUser.meta.token : '';
-            userService
-                .getUserProfile({ nickname, accessToken })
-                .then((res) => {
-                    setUserProfile(res);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        }
-    }, [nickname]);
+    // const [userProfile, setUserProfile] = useState({});
+    // const { nickname } = useParams();
+    // console.log(nickname);
+    // useEffect(() => {
+    //     if (nickname) {
+    //         const currentUser = JSON.parse(localStorage.getItem('user'));
+    //         const accessToken = currentUser && currentUser.meta.token ? currentUser.meta.token : '';
+    //         userService
+    //             .getUserProfile({ nickname, accessToken })
+    //             .then((res) => {
+    //                 setUserProfile(res);
+    //             })
+    //             .catch((error) => {
+    //                 console.log(error);
+    //             });
+    //     }
+    // }, [nickname]);
     return (
         <div className={cx('profile')}>
-            <div className={cx('information')}>
+            <h1>This is profile user</h1>
+            {/* <div className={cx('information')}>
                 <ProfileHeader userProfile={userProfile} />
             </div>
-            <ProfileBody />
+            <ProfileBody /> */}
         </div>
     );
 }
