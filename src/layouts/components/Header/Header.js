@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -28,6 +28,7 @@ import {
 import Image from '~/components/Image';
 import Search from '../Search';
 import Notifications from './Notifications';
+import * as authService from '~/services/authService';
 
 const cx = classNames.bind(styles);
 
@@ -70,7 +71,7 @@ const USERS_MENU = [
     {
         icon: <ViewProfileIcon />,
         title: 'View profile',
-        to: '/profile',
+        to: '/users/@dinhhuy98',
     },
     {
         icon: <GetCoinsIcon />,
@@ -97,6 +98,7 @@ const USERS_MENU = [
 ];
 
 function Header({ onClick, className }) {
+    const [userProfile, setUserProfile] = useState({});
     const currentUser = JSON.parse(localStorage.getItem('user'));
 
     const [notification, setNotification] = useState(false);
@@ -119,6 +121,15 @@ function Header({ onClick, className }) {
                 break;
         }
     };
+
+    useEffect(() => {
+        const accessToken = currentUser && currentUser.meta.token ? currentUser.meta.token : '';
+        if (accessToken) {
+            authService.getCurrentUser({ accessToken }).then((res) => {
+                setUserProfile(res);
+            });
+        }
+    }, []);
 
     return (
         <header className={cx('wrapper')}>
@@ -158,11 +169,7 @@ function Header({ onClick, className }) {
                                 </button>
                             </Tippy>
                             <Menu items={USERS_MENU} onChange={handleMenuChange}>
-                                <Image
-                                    className={cx('user-avatar')}
-                                    src="https://pdp.edu.vn/wp-content/uploads/2021/01/hinh-anh-girl-xinh-toc-ngan-de-thuong.jpg"
-                                    alt="Nguyen Van A"
-                                />
+                                <Image className={cx('user-avatar')} src={userProfile.avatar} alt="Nguyen Van A" />
                             </Menu>
                         </>
                     ) : (

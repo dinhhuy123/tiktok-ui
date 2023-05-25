@@ -41,8 +41,40 @@
     align-items: flex-end;
 }
 
-.follow-btn {
+.btnWrapper {
+    display: flex;
+    align-items: center;
     margin-top: 16px;
+}
+
+.messageBtn {
+    min-width: 164px;
+    margin-right: 8px;
+}
+
+.unFollowBtn {
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    box-sizing: border-box;
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(22, 24, 35, 0.12);
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    background-color: rgb(255, 255, 255);
+    float: right;
+    &:hover {
+        background-color: rgba(22, 24, 35, 0.03);
+    }
+}
+
+.followBtn {
+    margin-top: 16px;
+    height: 36px;
 }
 
 .check {

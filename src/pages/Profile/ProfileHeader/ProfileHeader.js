@@ -1,6 +1,8 @@
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import Tippy from '@tippyjs/react';
+import 'tippy.js/dist/tippy.css';
 import styles from './ProfileHeader.module.scss';
 import Button from '~/components/Button';
 import {
@@ -18,8 +20,11 @@ import {
     MessIcon,
     ReportIcon,
     BlockIcon,
+    UnFollowedIcon,
 } from '~/components/Icons';
 import ProfileMenu from '~/pages/Profile/ProfileMenu';
+import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
+import Image from '~/components/Image';
 
 const cx = classNames.bind(styles);
 
@@ -87,21 +92,48 @@ const MORE_ITEMS = [
     },
 ];
 
-function ProfileHeader({ userProfile }) {
+function ProfileHeader({ userProfile, stateOfCurrentUser, setModal, handlerFollow, followed }) {
+    const handleButton = () => {
+        return followed ? (
+            <div className={cx('btnWrapper')}>
+                <Button className={cx('messageBtn')} outline>
+                    Messages
+                </Button>
+                <Tippy delay={[0, 200]} content="Unfollow" placement="bottom">
+                    <button className={cx('unFollowBtn')} onClick={handlerFollow}>
+                        <UnFollowedIcon />
+                    </button>
+                </Tippy>
+            </div>
+        ) : (
+            <Button className={cx('followBtn')} primary widen onClick={handlerFollow}>
+                Follow
+            </Button>
+        );
+    };
     return (
         <div className={cx('profile-header')}>
             <div>
                 <div className={cx('header')}>
-                    <img className={cx('avatar')} src={userProfile.avatar} alt="" />
+                    <Image className={cx('avatar')} src={userProfile.avatar} alt="" />
                     <div className={cx('title-container')}>
                         <p className={cx('nickname')}>
                             <strong>{userProfile.nickname}</strong>
                             <FontAwesomeIcon className={cx('check')} icon={faCheckCircle} />
                         </p>
                         <p className={cx('name')}>{userProfile.first_name + ' ' + userProfile.last_name}</p>
-                        <Button className={cx('follow-btn')} primary widen>
-                            Follow
-                        </Button>
+                        {!stateOfCurrentUser ? (
+                            handleButton()
+                        ) : (
+                            <Button
+                                leftIcon={<FontAwesomeIcon icon={faPenToSquare} />}
+                                className={cx('followBtn')}
+                                upload
+                                onClick={() => setModal(true)}
+                            >
+                                Edit profile
+                            </Button>
+                        )}
                     </div>
                 </div>
 

@@ -7,7 +7,8 @@ import styles from './ProfileBody.module.scss';
 
 const cx = classNames.bind(styles);
 
-function ProfileBody() {
+function ProfileBody({ userProfile }) {
+    console.log(userProfile);
     const [state, setState] = useState(false);
     return (
         <div className={cx('profile-body')}>
@@ -26,7 +27,7 @@ function ProfileBody() {
                     <LockProfileBodyIcon />
                 </span>
                 <p className={cx('text-bold')}>This user's liked videos are private</p>
-                <p className={cx('text-normal')}>Videos liked by truongtinhnghi are currently hidden</p>
+                <p className={cx('text-normal')}>Videos liked by {userProfile.nickname} are currently hidden</p>
             </div>
         </div>
     );

@@ -59,6 +59,7 @@ function Video({ video, isFollowing }) {
             userService
                 .unFollowAnUser({ userId: video.user.id, accessToken: accessToken })
                 .then((res) => {
+                    console.log(res);
                     if (res.data) {
                         setFollowed(res.data.is_followed);
                     }
@@ -70,6 +71,7 @@ function Video({ video, isFollowing }) {
             userService
                 .followAnUser({ userId: video.user.id, accessToken: accessToken })
                 .then((res) => {
+                    console.log(res);
                     if (res.data) {
                         setFollowed(res.data.is_followed);
                     }

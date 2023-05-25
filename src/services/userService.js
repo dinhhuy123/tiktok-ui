@@ -65,6 +65,7 @@ export const followAnUser = async ({ userId, accessToken }) => {
         return await httpRequest.post(`users/${userId}/follow`, [], {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
+                withCredentials: true,
             },
         });
     } catch (error) {
@@ -77,6 +78,7 @@ export const unFollowAnUser = async ({ userId, accessToken }) => {
         return await httpRequest.post(`users/${userId}/unfollow`, [], {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
+                withCredentials: true,
             },
         });
     } catch (error) {

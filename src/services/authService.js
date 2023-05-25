@@ -22,3 +22,29 @@ export const register = async (type, email, password) => {
         console.log(error);
     }
 };
+
+export const getCurrentUser = async ({ accessToken }) => {
+    try {
+        const res = await httpRequest.get('auth/me', {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
+        return res.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const updateCurrentUser = async ({ accessToken }) => {
+    try {
+        const res = await httpRequest.post('auth/me?_method=PATCH', {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
+        return res.data;
+    } catch (error) {
+        console.log(error);
+    }
+};

@@ -45,7 +45,7 @@ function Sidebar({ className, state, onClick }) {
         userService
             .getFollowingUsers({ page: INIT_PAGE, accessToken })
             .then((data) => {
-                console.log(data);
+                // console.log(data);
                 setFollowingUsers(data);
             })
             .catch((error) => console.log(error));
@@ -89,7 +89,9 @@ function Sidebar({ className, state, onClick }) {
                         data={suggestedUsers}
                         moreSugUserFunc={moreSugUsers}
                     />
-                    <SuggestedAccounts moreTitle="See all" label="Following accounts" data={followingUsers} />
+                    {followingUsers[0] && (
+                        <SuggestedAccounts moreTitle="See all" label="Following accounts" data={followingUsers} />
+                    )}
                     <Discover label="Discover" className={cx(state ? 'narrow-title' : '')} />
                     <Privacy />
                 </>
