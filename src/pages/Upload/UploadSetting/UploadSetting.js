@@ -25,8 +25,6 @@ import Image from '~/components/Image';
 
 const cx = classNames.bind(styles);
 
-const className = cx('myCanvas');
-
 const ALLOW_USERS = [
     {
         id: 1,
@@ -43,6 +41,7 @@ const ALLOW_USERS = [
 ];
 
 function UploadSetting({ selectedFile, thumbArray, source }) {
+    const className = cx('myCanvas');
     const [limit, setLimit] = useState(false);
     const [checked, setChecked] = useState([]);
     const [copyrightSwitch, setCopyrightSwitch] = useState(false);
