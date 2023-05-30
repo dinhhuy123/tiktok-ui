@@ -22,6 +22,7 @@ function Profile() {
     const [followed, setFollowed] = useState(userProfile.is_followed);
     const [videoList, setVideoList] = useState([]);
     useEffect(() => {
+        console.log('run this!');
         if (nickname) {
             const currentUser = JSON.parse(localStorage.getItem('user'));
             const accessToken = currentUser && currentUser.meta.token ? currentUser.meta.token : '';
@@ -31,6 +32,7 @@ function Profile() {
                     .getCurrentUser({ accessToken })
                     .then((res) => {
                         setUserProfile(res);
+                        setVideoList([]);
                         setStateOfCurrentUser(true);
                         console.log('Getting uer with accessToken!');
                     })
@@ -104,7 +106,7 @@ function Profile() {
                     followed={followed}
                 />
             </div>
-            <ProfileBody userProfile={userProfile} videoList={videoList} />
+            <ProfileBody userProfile={userProfile} videoList={videoList} stateOfCurrentUser={stateOfCurrentUser} />
         </div>
     );
 }

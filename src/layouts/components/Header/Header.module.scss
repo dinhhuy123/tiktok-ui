@@ -18,8 +18,8 @@
 
 .inner {
     height: 100%;
-    width: var(--default-layout-width);
-    padding: 0 var(--default-layout-horizontal-spacer);
+    width: 100%;
+    padding: 0 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -30,7 +30,13 @@
     padding: 0 16px;
 }
 
-.logo-link {
+.logoContainer {
+    display: flex;
+    align-items: center;
+    min-width: 300px;
+}
+
+.logoLink {
     display: flex;
 }
 

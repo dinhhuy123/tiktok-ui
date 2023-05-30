@@ -155,7 +155,7 @@ function ProfileHeader({ userProfile, stateOfCurrentUser, setModal, handlerFollo
                     {!!userProfile.bio ? <p>{userProfile.bio}</p> : <p>No bio yet.</p>}
                 </div>
             </div>
-            <ProfileMenu shareItems={SHARE_ITEMS} moreItems={MORE_ITEMS} />
+            <ProfileMenu shareItems={SHARE_ITEMS} moreItems={MORE_ITEMS} stateOfCurrentUser={stateOfCurrentUser} />
         </div>
     );
 }

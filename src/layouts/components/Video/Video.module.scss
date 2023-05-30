@@ -219,3 +219,9 @@
     line-height: 17px;
     text-align: center;
 }
+
+@media screen and (max-width: 1071px) {
+    .user-video {
+        height: 480px;
+    }
+}

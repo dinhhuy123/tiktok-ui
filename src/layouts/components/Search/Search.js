@@ -61,7 +61,7 @@ function Search() {
     return (
         // Using a wrapper <div> or <span> tag around the reference element solves
         // this by creating a new parentNode context.
-        <div>
+        <div className={cx('parentNode')}>
             <HeadlessTippy
                 interactive
                 appendTo={() => document.body}
@@ -82,7 +82,7 @@ function Search() {
                     <input
                         ref={inputRef}
                         value={searchValue}
-                        placeholder="Search account and videos"
+                        placeholder="Search"
                         spellCheck={false}
                         onChange={handleChange}
                         onFocus={() => setShowResult(true)}
@@ -93,8 +93,8 @@ function Search() {
                         </button>
                     )}
                     {loading && <FontAwesomeIcon className={cx('loading')} icon={faSpinner} />}
-
-                    <button className={cx('search-btn')} onMouseDown={(e) => e.preventDefault()}>
+                    <span className={cx('spread')}></span>
+                    <button className={cx('searchBtn')} onMouseDown={(e) => e.preventDefault()}>
                         <SearchIcon />
                     </button>
                 </div>

@@ -37,6 +37,7 @@ function Home() {
     useEffect(() => {
         const timeForLoading = loadMoreVideos();
         return () => clearTimeout(timeForLoading);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

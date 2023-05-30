@@ -20,12 +20,11 @@ import * as userService from '~/services/userService';
 
 const cx = classNames.bind(styles);
 
-const INIT_PAGE = 1;
-const PER_PAGE = 5;
-
-function Sidebar({ className, state, onClick }) {
+function Sidebar({ className, onClick }) {
     const currentUser = JSON.parse(localStorage.getItem('user'));
     const accessToken = currentUser && currentUser.meta.token ? currentUser.meta.token : '';
+    const INIT_PAGE = 1;
+    const PER_PAGE = currentUser ? 8 : 5;
 
     const [suggestedUsers, setSuggestedUsers] = useState([]);
     const [followingUsers, setFollowingUsers] = useState([]);
@@ -33,19 +32,19 @@ function Sidebar({ className, state, onClick }) {
 
     useEffect(() => {
         userService
-            .getSuggestedUsers({ page: INIT_PAGE, perPage: perPage })
+            .getSuggestedUsers({ page: INIT_PAGE, perPage: perPage, accessToken })
             .then((data) => {
                 console.log(data);
                 setSuggestedUsers(data);
             })
             .catch((error) => console.log(error));
-    }, [perPage]);
+    }, [accessToken, perPage]);
 
     useEffect(() => {
         userService
-            .getFollowingUsers({ page: INIT_PAGE, accessToken })
+            .getFollowingUsers({ page: 1, accessToken })
             .then((data) => {
-                // console.log(data);
+                console.log(data);
                 setFollowingUsers(data);
             })
             .catch((error) => console.log(error));
@@ -53,14 +52,14 @@ function Sidebar({ className, state, onClick }) {
 
     const moreSugUsers = () => {
         if (suggestedUsers.length === PER_PAGE) {
-            setPerPage(PER_PAGE * 4);
+            setPerPage(PER_PAGE * 2);
         } else {
             setPerPage(PER_PAGE);
         }
     };
 
     return (
-        <aside className={cx('wrapper', className, state ? 'narrow' : '')}>
+        <div className={cx('wrapper', className)}>
             {currentUser ? (
                 <>
                     <Menu>
@@ -86,13 +85,13 @@ function Sidebar({ className, state, onClick }) {
                     <SuggestedAccounts
                         moreTitle={suggestedUsers.length === PER_PAGE ? 'See all' : 'See less'}
                         label="Suggest accounts"
-                        data={suggestedUsers}
+                        data={suggestedUsers.filter((suggestedUser) => suggestedUser.is_followed === false)}
                         moreSugUserFunc={moreSugUsers}
                     />
                     {followingUsers[0] && (
-                        <SuggestedAccounts moreTitle="See all" label="Following accounts" data={followingUsers} />
+                        <SuggestedAccounts moreTitle="See more" label="Following accounts" data={followingUsers} />
                     )}
-                    <Discover label="Discover" className={cx(state ? 'narrow-title' : '')} />
+                    <Discover label="Discover" />
                     <Privacy />
                 </>
             ) : (
@@ -128,7 +127,7 @@ function Sidebar({ className, state, onClick }) {
                     <Privacy />
                 </>
             )}
-        </aside>
+        </div>
     );
 }
 

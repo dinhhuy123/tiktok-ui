@@ -129,14 +129,17 @@ function Header({ onClick, className }) {
                 setUserProfile(res);
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner', className)}>
-                <Link to={config.routes.home} className={cx('logo-link')}>
-                    <img src={images.logo} alt="Tiktok" />
-                </Link>
+                <div className={cx('logoContainer')}>
+                    <Link to={config.routes.home} className={cx('logoLink')}>
+                        <img src={images.logo} alt="Tiktok" />
+                    </Link>
+                </div>
 
                 <Search />
 

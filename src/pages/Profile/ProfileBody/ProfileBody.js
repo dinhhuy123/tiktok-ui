@@ -7,7 +7,7 @@ import styles from './ProfileBody.module.scss';
 
 const cx = classNames.bind(styles);
 
-function ProfileBody({ userProfile, videoList }) {
+function ProfileBody({ userProfile, videoList, stateOfCurrentUser }) {
     const [state, setState] = useState(false);
     const className = cx('myCanvas');
 
@@ -73,6 +73,7 @@ function ProfileBody({ userProfile, videoList }) {
 
     useEffect(() => {
         createVideo();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [videoList.length]);
 
     return (
@@ -87,7 +88,7 @@ function ProfileBody({ userProfile, videoList }) {
                 </button>
                 <div className={cx('highlightBtn')}></div>
             </div>
-            {!(videoList.length > 0) ? (
+            {stateOfCurrentUser && !(videoList.length > 0) ? (
                 <div className={cx('noVideo')}>
                     <span className={cx('lockLabel')}>
                         <LockProfileBodyIcon />
@@ -105,7 +106,7 @@ function ProfileBody({ userProfile, videoList }) {
                                         <div className={cx('divWrapper')}>
                                             <a
                                                 className={cx('linkVideo')}
-                                                href="/videos"
+                                                href={`/users/@${video.user.nickname}/video/${video.id}`}
                                                 id="linkVideo"
                                                 onMouseOver={() => playVideo(index)}
                                                 onMouseLeave={() => pauseVideo(index)}

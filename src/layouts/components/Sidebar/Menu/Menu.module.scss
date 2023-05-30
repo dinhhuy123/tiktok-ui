@@ -37,3 +37,12 @@
 .active-icon {
     display: none;
 }
+
+@media screen and (max-width: 1071px) {
+    .title {
+        display: none;
+    }
+    .menu-item {
+        justify-content: center;
+    }
+}

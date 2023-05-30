@@ -55,3 +55,18 @@
     color: #fe2c55;
     cursor: pointer;
 }
+
+@media screen and (max-width: 1071px) {
+    .label {
+        display: none;
+    }
+    .item-info {
+        display: none;
+    }
+    .account-item {
+        justify-content: center;
+    }
+    .more-btn {
+        display: none;
+    }
+}

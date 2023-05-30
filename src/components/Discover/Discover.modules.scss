@@ -31,7 +31,7 @@
 }
 
 .title {
-    max-width: 290px;
+    max-width: 160px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -43,6 +43,8 @@
     margin-left: -5px;
 }
 
-.narrow-title {
-    max-width: 160px;
+@media screen and (max-width: 1071px) {
+    .discoverWrapper {
+        display: none;
+    }
 }

@@ -148,6 +148,7 @@ function UploadSetting({ selectedFile, thumbArray, source }) {
 
     useEffect(() => {
         createVideo();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

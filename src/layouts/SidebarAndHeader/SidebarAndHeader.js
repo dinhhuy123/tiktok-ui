@@ -1,4 +1,4 @@
-import { useState, createContext } from 'react';
+import { useState, createContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
@@ -7,6 +7,8 @@ import Modal from '~/layouts/components/Modal';
 import styles from './SidebarAndHeader.module.scss';
 import Sidebar from '~/layouts/components/Sidebar';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
+import Button from '~/components/Button';
+import { ToTopIcon } from '~/components/Icons';
 
 const cx = classNames.bind(styles);
 
@@ -15,14 +17,26 @@ export const ModalContext = createContext();
 function SidebarAndHeader({ children }) {
     const [modal, setModal] = useState(false);
     const [hideItem, setHideItem] = useState(false);
+    const [height, setHeight] = useState(0);
     const handleChangeHideItem = () => {
         setHideItem(!hideItem);
     };
-    const state = true;
+
+    useEffect(() => {
+        window.onscroll = () => {
+            setHeight(document.documentElement.scrollTop);
+        };
+        if (height > 0) {
+            document.getElementById('toTop').style.bottom = '12px';
+        } else {
+            document.getElementById('toTop').style.bottom = '-32px';
+        }
+    });
+
     return (
         <ModalContext.Provider value={setModal}>
             <div className={cx('wrapper')}>
-                <Header onClick={() => setModal(true)} className={cx(`${state ? 'spread' : ''}`)} />
+                <Header onClick={() => setModal(true)} />
                 {modal && (
                     <div className={cx('modal')} onClick={handleChangeHideItem}>
                         <PopperWrapper className={cx('modal-wrapper')}>
@@ -31,8 +45,16 @@ function SidebarAndHeader({ children }) {
                     </div>
                 )}
                 <div className={cx('container')}>
-                    <Sidebar onClick={() => setModal(true)} className={cx('sidebar')} state={state} />
+                    <Sidebar onClick={() => setModal(true)} className={cx('sidebar')} />
                     <div className={cx('content')}>{children}</div>
+                </div>
+                <div className={cx('getApp')} id="toTop">
+                    <Button rounded className={cx('getAppBtn')}>
+                        Get app
+                    </Button>
+                    <Button href="#" className={cx('toTop')}>
+                        <ToTopIcon />
+                    </Button>
                 </div>
             </div>
         </ModalContext.Provider>
