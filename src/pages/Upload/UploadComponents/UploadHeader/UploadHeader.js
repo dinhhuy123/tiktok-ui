@@ -2,12 +2,12 @@ import classNames from 'classnames/bind';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 import { DecreaseIcon, EditVideoIcon, IncreaseIcon, SplitIcon } from '~/components/Icons';
 
-import styles from './UploadSetting.module.scss';
+import styles from './UploadHeader.module.scss';
 import Button from '~/components/Button/Button';
 
 const cx = classNames.bind(styles);
 
-function UploadSettingHeader({ selectedFile, thumbArray }) {
+function UploadHeader({ selectedFile, thumbArray }) {
     return (
         <PopperWrapper className={cx('noPadding')}>
             <div className={cx('grid')}>
@@ -61,4 +61,4 @@ function UploadSettingHeader({ selectedFile, thumbArray }) {
     );
 }
 
-export default UploadSettingHeader;
+export default UploadHeader;

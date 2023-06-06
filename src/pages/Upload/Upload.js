@@ -6,7 +6,7 @@ import { Wrapper as PopperWrapper } from '~/components/Popper';
 import { UploadVideoIcon } from '~/components/Icons';
 import Button from '~/components/Button';
 import Footer from './Footer';
-import UploadSetting from './UploadSetting';
+import VideoSetting from './UploadComponents/VideoSetting';
 
 const cx = classNames.bind(styles);
 
@@ -175,7 +175,7 @@ function Upload() {
                 console.log(error);
             });
         generateVideoThumbnails(file, 8).then((thumbnail) => {
-            setThumbArray(thumbnail);
+            setThumbArray(thumbnail.slice(0, 8));
         });
     };
 
@@ -229,7 +229,7 @@ function Upload() {
                             </div>
                         </PopperWrapper>
                     ) : (
-                        <UploadSetting selectedFile={selectedFile} thumbArray={thumbArray} source={source} />
+                        <VideoSetting selectedFile={selectedFile} thumbArray={thumbArray} source={source} />
                     )}
                 </div>
             </div>

@@ -1,15 +1,15 @@
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames/bind';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { LockProfileBodyIcon } from '~/components/Icons';
 import styles from './ProfileBody.module.scss';
 
 const cx = classNames.bind(styles);
 
 function ProfileBody({ userProfile, videoList, stateOfCurrentUser }) {
+    console.log(userProfile);
     const [state, setState] = useState(false);
-    const className = cx('myCanvas');
 
     const videoRef = useRef([]);
 
@@ -19,62 +19,8 @@ function ProfileBody({ userProfile, videoList, stateOfCurrentUser }) {
 
     const pauseVideo = (index) => {
         videoRef.current[index].pause();
+        videoRef.current[index].currentTime = 0;
     };
-
-    const createVideo = () => {
-        if (videoList.length > 0) {
-            const linkVideo = document.querySelectorAll('#linkVideo');
-            for (let i = 0; i < linkVideo.length; i++) {
-                const canvas = document.createElement('canvas');
-                const videoCurrent = videoRef.current[i];
-                canvas.width = 300;
-                canvas.height = 400;
-                canvas.className = className;
-                const canvasDraw = canvas.getContext('2d');
-                linkVideo[i].append(canvas);
-                let j;
-                const draw = () => {
-                    j = window.requestAnimationFrame(draw);
-                    canvasDraw.drawImage(videoCurrent, 0, 0, canvas.width, canvas.height);
-                };
-                videoCurrent.addEventListener(
-                    'loadeddata',
-                    () => {
-                        draw();
-                    },
-                    false,
-                );
-                videoCurrent.addEventListener(
-                    'play',
-                    () => {
-                        draw();
-                    },
-                    false,
-                );
-                videoCurrent.addEventListener(
-                    'pause',
-                    () => {
-                        window.cancelAnimationFrame(j);
-                        j = undefined;
-                    },
-                    false,
-                );
-                videoCurrent.addEventListener(
-                    'ended',
-                    function () {
-                        window.cancelAnimationFrame(j);
-                        j = undefined;
-                    },
-                    false,
-                );
-            }
-        }
-    };
-
-    useEffect(() => {
-        createVideo();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [videoList.length]);
 
     return (
         <div className={cx('profileBody')}>

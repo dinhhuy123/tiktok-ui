@@ -48,3 +48,30 @@ export const updateCurrentUser = async ({ accessToken }) => {
         console.log(error);
     }
 };
+
+export const createNewVideo = async ({
+    description,
+    upload_file,
+    thumbnail_time,
+    music,
+    viewable,
+    allows = [],
+    accessToken,
+}) => {
+    try {
+        const res = await httpRequest.post('videos', {
+            description,
+            upload_file,
+            thumbnail_time,
+            music,
+            viewable,
+            allows,
+            header: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
+        return res.data;
+    } catch (error) {
+        console.log(error);
+    }
+};

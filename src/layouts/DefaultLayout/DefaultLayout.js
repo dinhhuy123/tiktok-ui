@@ -39,7 +39,7 @@ function DefaultLayout({ children }) {
                 <Header onClick={() => setModal(true)} />
                 {modal && (
                     <div className={cx('modal')} onClick={handleChangeHideItem}>
-                        <PopperWrapper className={cx('modal-wrapper')}>
+                        <PopperWrapper className={cx('modal-wrapper', 'noPadding')}>
                             <Modal onClick={() => setModal(false)} />
                         </PopperWrapper>
                     </div>

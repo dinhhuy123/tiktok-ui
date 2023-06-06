@@ -125,16 +125,14 @@ function Modal({ onClick, currentUser }) {
             <div className={cx(`${!changeType ? 'modal-body-login' : 'modal-body-signup'}`)}>
                 <Menu items={MODAL_ITEMS} signup={SIGNUP_ITEMS} changeType={changeType} />
             </div>
-            {changeType && (
-                <div className={cx('agreeing')}>
-                    <p className={cx('agreeing-content')}>
-                        By continuing, you agree to TikTok’s
-                        <a href="/"> Terms of Service </a>
-                        and confirm that you have read TikTok’s
-                        <a href="/"> Privacy Policy</a>
-                    </p>
-                </div>
-            )}
+            <div className={cx('agreeing')}>
+                <p className={cx('agreeing-content')}>
+                    By continuing, you agree to TikTok’s
+                    <a href="/"> Terms of Service </a>
+                    and confirm that you have read TikTok’s
+                    <a href="/"> Privacy Policy</a>
+                </p>
+            </div>
             {changeType ? (
                 <div className={cx('modal-footer')}>
                     <p>Already have an account?</p>
