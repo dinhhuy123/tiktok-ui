@@ -63,6 +63,19 @@ export const getVideos = async ({ type, page, accessToken = '' }) => {
     }
 };
 
+export const getAVideo = async (videoID, accessToken) => {
+    try {
+        const res = await httpRequest.get(`videos/${videoID}`, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
+        return res.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 export const followAnUser = async ({ userId, accessToken }) => {
     try {
         return await httpRequest.post(`users/${userId}/follow`, [], {

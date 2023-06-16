@@ -20,48 +20,9 @@
     justify-content: center;
 }
 
-.modal {
-    z-index: 100;
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 10;
-    background: rgba(0, 0, 0, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.modal-wrapper {
-    max-height: 693px;
-    height: 80%;
-    overflow: hidden;
-    transition: all 300ms cubic-bezier(0.075, 0.82, 0.165, 1) 0s;
-    transform: none;
-    width: 483px;
-    animation: appearance 0.3s linear;
-}
-
-.noPadding {
-    padding: 0;
-}
-
 .hidden {
     transform: scale(0);
     transition-duration: 0.3s;
-}
-
-@keyframes appearance {
-    from {
-        opacity: 0;
-        transform: scale(0);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
 }
 
 .getApp {

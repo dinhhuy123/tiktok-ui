@@ -4,7 +4,7 @@ import styles from './VideoCover.module.scss';
 
 const cx = classNames.bind(styles);
 
-function VideoCover({ thumbArray, source }) {
+function VideoCover({ thumbArray, source, timeCoverRef }) {
     const videoRef = useRef();
     const [sliderValue, setSliderValue] = useState(4);
     const [videoDuration, setVideoDuration] = useState();
@@ -13,8 +13,9 @@ function VideoCover({ thumbArray, source }) {
         const currentTime = (videoDuration / 600) * sliderValue;
         if (isFinite(currentTime)) {
             videoRef.current.currentTime = Math.floor(currentTime);
+            timeCoverRef.current = currentTime;
         }
-    }, [sliderValue, videoDuration, videoRef]);
+    }, [sliderValue, timeCoverRef, videoDuration, videoRef]);
 
     return (
         <div className={cx('cover')}>

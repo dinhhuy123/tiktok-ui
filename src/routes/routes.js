@@ -2,7 +2,8 @@ import config from '~/config';
 
 // Layouts
 import { HeaderOnly } from '~/layouts';
-import { SidebarAndHeader } from '~/layouts';
+import { ProfileLayout } from '~/layouts';
+import { VideoLayout } from '~/layouts';
 
 // Pages
 import Home from '~/pages/Home';
@@ -15,9 +16,10 @@ import Search from '~/pages/Search';
 const publicRoutes = [
     { path: config.routes.home, component: Home },
     { path: config.routes.following, component: Following },
-    { path: config.routes.profile, component: Profile, layout: SidebarAndHeader },
+    { path: config.routes.profile, component: Profile, layout: ProfileLayout },
     { path: config.routes.upload, component: Upload, layout: HeaderOnly },
     { path: config.routes.search, component: Search, layout: null },
+    { path: config.routes.video, component: Profile, layout: VideoLayout },
 ];
 
 const privateRoutes = [];

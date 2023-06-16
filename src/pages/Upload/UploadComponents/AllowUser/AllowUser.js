@@ -1,6 +1,5 @@
 import classNames from 'classnames/bind';
 import styles from './AllowUser.module.scss';
-import { useState } from 'react';
 import { CheckedBoxIcon } from '~/components/Icons';
 
 const cx = classNames.bind(styles);
@@ -16,20 +15,20 @@ const ALLOW_USERS = [
     },
     {
         id: 3,
-        title: 'Stich',
+        title: 'Stitch',
     },
 ];
 
-function AllowUser() {
-    const [checked, setChecked] = useState([]);
+function AllowUser({ allowUser, setAllowUser }) {
+    console.log(allowUser);
 
-    const handleCheckedBox = (id) => {
-        setChecked((prev) => {
-            const isChecked = checked.includes(id);
+    const handleCheckedBox = (title) => {
+        setAllowUser((prev) => {
+            const isChecked = allowUser.includes(title);
             if (isChecked) {
-                return checked.filter((item) => item !== id);
+                return allowUser.filter((item) => item !== title);
             } else {
-                return [...prev, id];
+                return [...prev, title];
             }
         });
     };
@@ -40,20 +39,26 @@ function AllowUser() {
                 <span>Allow users to</span>
             </div>
             <div className={cx('checkedBoxesContainer')}>
-                {ALLOW_USERS.map((allowUser) => (
-                    <div key={allowUser.id} className={cx('checkedBox')} onClick={() => handleCheckedBox(allowUser.id)}>
+                {ALLOW_USERS.map((item) => (
+                    <div
+                        key={item.id}
+                        className={cx('checkedBox')}
+                        // onClick={() => handleCheckedBox(allowUser.id, allowUser.title)}
+                    >
                         <div className={cx('checkedBoxCustom')}>
                             <input
-                                checked={!checked.includes(allowUser.id)}
+                                checked={allowUser.includes(item.title.toLowerCase())}
                                 className={cx('visible')}
                                 type="checkbox"
-                                onChange={() => handleCheckedBox(allowUser.id)}
+                                onChange={() => handleCheckedBox(item.title.toLowerCase())}
                             />
-                            <div className={cx(!checked.includes(allowUser.id) ? 'custom' : 'unchecked')}>
-                                {!checked.includes(allowUser.id) && <CheckedBoxIcon className={cx('checkedBoxIcon')} />}
+                            <div className={cx(allowUser.includes(item.title.toLowerCase()) ? 'custom' : 'unchecked')}>
+                                {allowUser.includes(item.title.toLowerCase()) && (
+                                    <CheckedBoxIcon className={cx('checkedBoxIcon')} />
+                                )}
                             </div>
                         </div>
-                        <span>{allowUser.title}</span>
+                        <span>{item.title}</span>
                     </div>
                 ))}
             </div>

@@ -473,6 +473,7 @@
         margin-right: 7px;
     }
     .soundContent {
+        white-space: nowrap;
         max-width: 150px;
         line-height: 17px;
         font-weight: 400;
@@ -480,4 +481,95 @@
             font-size: 12px;
         }
     }
+}
+
+.changeVideo {
+    border: 1px solid rgba(22, 24, 35, 0.12);
+    margin-top: 16px;
+    background: rgb(255, 255, 255);
+    box-sizing: border-box;
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.file {
+    line-height: 17px;
+    font-weight: 400;
+    color: rgba(22, 24, 35, 0.75);
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    align-items: center;
+    max-width: 150px;
+    span {
+        display: flex;
+        align-items: center;
+    }
+    .fileIcon {
+        margin-right: 4px;
+        width: 16px;
+        height: 16px;
+    }
+    .fileName {
+        font-size: 12px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+}
+
+.changeVideoBtn {
+    font-size: 12px;
+    line-height: 17px;
+    font-family: proxima-semibold, Arial, Tahoma, PingFangSC, sans-serif;
+    font-weight: 600;
+    color: rgb(22, 24, 35);
+    cursor: pointer;
+}
+
+// css modal
+.title {
+    padding: 32px 32px 24px;
+    div:first-child {
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 24px;
+        color: rgb(22, 24, 35);
+        word-break: break-word;
+        text-align: center;
+    }
+    div:last-child {
+        margin-top: 8px;
+        font-weight: 400;
+        font-size: 15px;
+        line-height: 18px;
+        word-break: break-word;
+        text-align: center;
+        color: rgba(22, 24, 35, 0.5);
+    }
+}
+
+.content {
+    padding: 16.5px 16px 17px;
+    text-align: center;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 18px;
+    border-top: 1px solid rgba(22, 24, 35, 0.12);
+    word-break: break-word;
+    cursor: pointer;
+}
+
+.replace {
+    font-weight: 600;
+    color: rgb(254, 44, 85);
+}
+
+.continue {
+    font-weight: 500;
 }

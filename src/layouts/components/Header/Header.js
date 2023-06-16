@@ -92,7 +92,7 @@ const USERS_MENU = [
     {
         icon: <FontAwesomeIcon icon={faSignOut} />,
         title: 'Log out',
-        to: '/logout',
+        type: 'logout',
         separate: true,
     },
 ];
@@ -100,6 +100,7 @@ const USERS_MENU = [
 function Header({ onClick, className }) {
     const [userProfile, setUserProfile] = useState({});
     const currentUser = JSON.parse(localStorage.getItem('user'));
+    const accessToken = currentUser && currentUser.meta.token ? currentUser.meta.token : '';
 
     const [notification, setNotification] = useState(false);
 
@@ -109,13 +110,11 @@ function Header({ onClick, className }) {
             case 'language':
                 // Handle change language
                 break;
-            default:
-        }
-
-        switch (menuItem.to) {
-            case '/logout':
-                localStorage.removeItem('user');
-                window.location.reload();
+            case 'logout':
+                authService.logout(accessToken).then(() => {
+                    localStorage.removeItem('user');
+                    window.location.reload();
+                });
                 break;
             default:
                 break;
@@ -125,7 +124,7 @@ function Header({ onClick, className }) {
     useEffect(() => {
         const accessToken = currentUser && currentUser.meta.token ? currentUser.meta.token : '';
         if (accessToken) {
-            authService.getCurrentUser({ accessToken }).then((res) => {
+            authService.getCurrentUser(accessToken).then((res) => {
                 setUserProfile(res);
             });
         }

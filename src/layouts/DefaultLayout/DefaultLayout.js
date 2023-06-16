@@ -1,26 +1,20 @@
-import { useState, createContext, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
 import Header from '~/layouts/components/Header';
-import Modal from '~/layouts/components/Modal';
 import Sidebar from '~/layouts/components/Sidebar';
 import styles from './DefaultLayout.module.scss';
-import { Wrapper as PopperWrapper } from '~/components/Popper';
 import Button from '~/components/Button';
 import { ToTopIcon } from '~/components/Icons';
+import { ModalContextShow } from '~/contexts/ModalContext';
 
 const cx = classNames.bind(styles);
 
-export const ModalContext = createContext();
-
 function DefaultLayout({ children }) {
-    const [modal, setModal] = useState(false);
-    const [hideItem, setHideItem] = useState(false);
     const [height, setHeight] = useState(0);
-    const handleChangeHideItem = () => {
-        setHideItem(!hideItem);
-    };
+
+    const { setShowLoginModal } = useContext(ModalContextShow);
 
     useEffect(() => {
         window.onscroll = () => {
@@ -34,30 +28,21 @@ function DefaultLayout({ children }) {
     });
 
     return (
-        <ModalContext.Provider value={setModal}>
-            <div className={cx('wrapper')}>
-                <Header onClick={() => setModal(true)} />
-                {modal && (
-                    <div className={cx('modal')} onClick={handleChangeHideItem}>
-                        <PopperWrapper className={cx('modal-wrapper', 'noPadding')}>
-                            <Modal onClick={() => setModal(false)} />
-                        </PopperWrapper>
-                    </div>
-                )}
-                <div className={cx('container')}>
-                    <Sidebar onClick={() => setModal(true)} className={cx('sidebar')} />
-                    <div className={cx('content')}>{children}</div>
-                </div>
-                <div className={cx('getApp')} id="toTop">
-                    <Button rounded className={cx('getAppBtn')}>
-                        Get app
-                    </Button>
-                    <Button href="#" className={cx('toTop')}>
-                        <ToTopIcon />
-                    </Button>
-                </div>
+        <div className={cx('wrapper')}>
+            <Header onClick={() => setShowLoginModal(true)} />
+            <div className={cx('container')}>
+                <Sidebar className={cx('sidebar')} onClick={() => setShowLoginModal(true)} />
+                <div className={cx('content')}>{children}</div>
             </div>
-        </ModalContext.Provider>
+            <div className={cx('getApp')} id="toTop">
+                <Button rounded className={cx('getAppBtn')}>
+                    Get app
+                </Button>
+                <Button href="#" className={cx('toTop')}>
+                    <ToTopIcon />
+                </Button>
+            </div>
+        </div>
     );
 }
 

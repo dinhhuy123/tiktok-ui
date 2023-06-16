@@ -5,15 +5,12 @@ import ProfileBody from './ProfileBody';
 import ProfileHeader from './ProfileHeader';
 import { useContext, useEffect, useState } from 'react';
 import * as userService from '~/services/userService';
-import * as authService from '~/services/authService';
 import EditProfileModal from './EditProfileModal/EditProfileModal';
-import { ModalContext } from '~/layouts/SidebarAndHeader';
+import { ModalContextShow } from '~/contexts/ModalContext';
 
 const cx = classNames.bind(styles);
 
 function Profile() {
-    const setModalContext = useContext(ModalContext);
-
     const [userProfile, setUserProfile] = useState({});
     const [stateOfCurrentUser, setStateOfCurrentUser] = useState(false);
     const { nickname } = useParams();
@@ -21,38 +18,29 @@ function Profile() {
     const [accessToken, setAccessToken] = useState('');
     const [followed, setFollowed] = useState(userProfile.is_followed);
     const [videoList, setVideoList] = useState([]);
+    const { setShowLoginModal } = useContext(ModalContextShow);
     useEffect(() => {
-        console.log('run this!');
         if (nickname) {
             const currentUser = JSON.parse(localStorage.getItem('user'));
             const accessToken = currentUser && currentUser.meta.token ? currentUser.meta.token : '';
             setAccessToken(accessToken);
-            if (nickname.slice(1, nickname.length) === currentUser?.data.nickname) {
-                authService
-                    .getCurrentUser({ accessToken })
-                    .then((res) => {
-                        setUserProfile(res);
-                        setVideoList([]);
+
+            userService
+                .getUserProfile({ nickname, accessToken })
+                .then((res) => {
+                    setUserProfile(res);
+                    setFollowed(res.is_followed);
+                    setVideoList(res.videos);
+                    if (nickname.slice(1, nickname.length) === currentUser?.data.nickname) {
                         setStateOfCurrentUser(true);
-                        console.log('Getting uer with accessToken!');
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
-            } else {
-                userService
-                    .getUserProfile({ nickname, accessToken })
-                    .then((res) => {
-                        setUserProfile(res);
-                        setFollowed(res.is_followed);
-                        setVideoList(res.videos);
+                    } else {
                         setStateOfCurrentUser(false);
-                        console.log('Getting uer without accessToken!');
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
-            }
+                    }
+                    console.log('Getting uer without accessToken!');
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         }
     }, [nickname]);
 
@@ -84,7 +72,7 @@ function Profile() {
                     });
             }
         } else {
-            setModalContext(true);
+            setShowLoginModal(true);
         }
     };
 

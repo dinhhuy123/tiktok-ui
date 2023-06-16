@@ -1,0 +1,32 @@
+.videoLayout {
+    display: flex;
+}
+
+.videoContainer {
+    flex: 1 0 600px;
+}
+
+.videoPlayer {
+    cursor: pointer;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.videoBackground {
+    background: 50% / cover no-repeat;
+    -webkit-filter: blur(2px);
+    filter: blur(2px);
+    height: 10%;
+    left: 50%;
+    opacity: 0.3;
+    position: absolute;
+    top: 50%;
+    -webkit-transform: scale(11);
+    transform: scale(11);
+    width: 10%;
+}
+
+.commentContainer {
+    flex: 0 0 544px;
+}

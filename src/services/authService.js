@@ -11,19 +11,27 @@ export const login = async (email, password) => {
     }
 };
 
-export const register = async (type, email, password) => {
+export const logout = async (accessToken) => {
     try {
-        return await httpRequest.post('auth/register', {
-            type,
-            email,
-            password,
+        return await httpRequest.post('auth/logout', [], {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
         });
     } catch (error) {
         console.log(error);
     }
 };
 
-export const getCurrentUser = async ({ accessToken }) => {
+export const register = async (dataRegister) => {
+    try {
+        return await httpRequest.post('auth/register', dataRegister);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const getCurrentUser = async (accessToken) => {
     try {
         const res = await httpRequest.get('auth/me', {
             headers: {
@@ -36,37 +44,10 @@ export const getCurrentUser = async ({ accessToken }) => {
     }
 };
 
-export const updateCurrentUser = async ({ accessToken }) => {
+export const updateCurrentUser = async (dataCurrentUser, accessToken) => {
     try {
-        const res = await httpRequest.post('auth/me?_method=PATCH', {
+        const res = await httpRequest.post('auth/me?_method=PATCH', dataCurrentUser, {
             headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
-        });
-        return res.data;
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-export const createNewVideo = async ({
-    description,
-    upload_file,
-    thumbnail_time,
-    music,
-    viewable,
-    allows = [],
-    accessToken,
-}) => {
-    try {
-        const res = await httpRequest.post('videos', {
-            description,
-            upload_file,
-            thumbnail_time,
-            music,
-            viewable,
-            allows,
-            header: {
                 Authorization: `Bearer ${accessToken}`,
             },
         });

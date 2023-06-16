@@ -5,6 +5,7 @@ const routes = {
     upload: '/upload',
     search: '/search',
     live: '/live',
+    video: '/users/:nickname/video/:id',
     // account: '/@truongtinhnghi',
 };
 

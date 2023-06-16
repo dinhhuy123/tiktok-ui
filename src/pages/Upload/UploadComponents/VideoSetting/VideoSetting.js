@@ -1,60 +1,107 @@
+import { useContext, useEffect, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 import Switch from 'react-ios-switch';
-import { Wrapper as PopperWrapper } from '~/components/Popper';
-import { VideoNameIcon } from '~/components/Icons';
 
+import { Wrapper as PopperWrapper } from '~/components/Popper';
 import styles from './VideoSetting.module.scss';
 import Button from '~/components/Button/Button';
-import { useEffect, useState } from 'react';
 import * as authService from '~/services/authService';
+import * as videoService from '~/services/videoService';
 import UploadHeader from '../UploadHeader';
 import VideoPreview from '../VideoPreview';
 import Viewable from '../Viewable';
-import VideoCover from '../VideoCover/VideoCover';
-import AllowUser from '../AllowUser/AllowUser';
+import VideoCover from '../VideoCover';
+import AllowUser from '../AllowUser';
+import { ModalContextShow } from '~/contexts/ModalContext';
+import { NotifyContextShow } from '~/contexts/NotifyContext';
 
 const cx = classNames.bind(styles);
 
-function VideoSetting({ selectedFile, thumbArray, source }) {
+function VideoSetting({ selectedFile, thumbArray, source, file, setFile }) {
+    const timeCoverRef = useRef(0);
+    const currentUser = JSON.parse(localStorage.getItem('user'));
+    const accessToken = currentUser && currentUser.meta.token ? currentUser.meta.token : '';
+
     const [userProfile, setUserProfile] = useState({});
     const [limit, setLimit] = useState(false);
     const [copyrightSwitch, setCopyrightSwitch] = useState(false);
     const [caption, setCaption] = useState(selectedFile.fileName);
     const [changeBtn, setChangeBtn] = useState(false);
     const [viewable, setViewable] = useState('Public');
+    const [musicValue, setMusicValue] = useState(
+        `Original sound - ${currentUser.data.first_name} ${currentUser.data.last_name}`,
+    );
+    const [allowUser, setAllowUser] = useState(['comment', 'duet', 'stitch']);
 
-    const currentUser = JSON.parse(localStorage.getItem('user'));
-    const accessToken = currentUser && currentUser.meta.token ? currentUser.meta.token : '';
+    const { showConfirmModal } = useContext(ModalContextShow);
+    const showNotify = useContext(NotifyContextShow);
+
+    // console.log(file.name);
 
     const handleViewable = (viewable) => {
         setViewable(viewable);
         setLimit(false);
     };
 
-    const changeVideo = (e) => {
-        e.preventDefault();
-    };
-
     useEffect(() => {
         if (accessToken) {
-            authService.getCurrentUser({ accessToken }).then((res) => {
+            authService.getCurrentUser(accessToken).then((res) => {
                 setUserProfile(res);
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const postVideo = (e) => {
-        e.preventDefault();
-        authService.createNewVideo({
-            description: caption,
-            upload_file: selectedFile.file,
-            thumbnail_time: '5',
-            music: 'Ngau Hung - remix',
-            viewable: viewable,
-            allows: ['comment'],
-            accessToken: accessToken,
+    const handleResetState = () => {
+        setFile(null);
+        setMusicValue(`Original sound - ${currentUser.data.first_name} ${currentUser.data.last_name}`);
+    };
+
+    const confirmUploadVideo = () => {
+        const dataModal = {
+            description: (
+                <div className={cx('confirmTitle')}>
+                    <div>Your video are being uploaded to TikTok!</div>
+                </div>
+            ),
+            agree: (
+                <div className={cx('upload')}>
+                    <Button primary className={cx('uploadBtn')} onClick={handleResetState}>
+                        Upload another video
+                    </Button>
+                </div>
+            ),
+            cancel: (
+                <div className={cx('view')}>
+                    <Button upload className={cx('viewProfileBtn')} to={`/users/@${currentUser.data.nickname}`}>
+                        View profile
+                    </Button>
+                </div>
+            ),
+        };
+        showConfirmModal(dataModal);
+    };
+
+    const postVideo = async (e) => {
+        const dataUpload = new FormData();
+
+        // upload file
+        dataUpload.append('upload_file', file);
+        // description
+        dataUpload.append('description', caption);
+        // music
+        musicValue && dataUpload.append('music', musicValue);
+        // cover
+        dataUpload.append('thumbnail_time', '5');
+        // viewable
+        dataUpload.append('viewable', viewable.toLowerCase());
+        // Allow user
+        allowUser.forEach((item) => {
+            item && dataUpload.append('allows[]', item.toLowerCase());
         });
+
+        const data = await videoService.createNewVideo(dataUpload, accessToken);
+        data ? confirmUploadVideo() : showNotify('Error in the uploading process. Please try again!', 3000);
     };
 
     return (
@@ -76,18 +123,9 @@ function VideoSetting({ selectedFile, thumbArray, source }) {
                                 selectedFile={selectedFile}
                                 userProfile={userProfile}
                                 source={source}
+                                setFile={setFile}
+                                musicValue={musicValue}
                             />
-                            <div className={cx('changeVideo')}>
-                                <div className={cx('file')}>
-                                    <span>
-                                        <VideoNameIcon className={cx('fileIcon')} />
-                                    </span>
-                                    <div className={cx('fileName')}>{selectedFile.fileName}</div>
-                                </div>
-                                <div className={cx('changeVideoBtn')} onClick={changeVideo}>
-                                    Change Video
-                                </div>
-                            </div>
                         </div>
                         <div className={cx('setting')}>
                             <div className={cx('caption')}>
@@ -105,14 +143,14 @@ function VideoSetting({ selectedFile, thumbArray, source }) {
                                     </div>
                                 </div>
                             </div>
-                            <VideoCover thumbArray={thumbArray} source={source} />
+                            <VideoCover thumbArray={thumbArray} source={source} timeCoverRef={timeCoverRef} />
                             <Viewable
                                 limit={limit}
                                 setLimit={setLimit}
                                 viewable={viewable}
                                 handleViewable={handleViewable}
                             />
-                            <AllowUser />
+                            <AllowUser allowUser={allowUser} setAllowUser={setAllowUser} />
                             <div className={cx('copyright')}>
                                 <div className={cx('title', 'switch')}>
                                     <span>Run a copyright check</span>

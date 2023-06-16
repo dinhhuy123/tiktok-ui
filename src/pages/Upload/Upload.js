@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import classNames from 'classnames/bind';
 
 import styles from './Upload.module.scss';
@@ -7,19 +7,22 @@ import { UploadVideoIcon } from '~/components/Icons';
 import Button from '~/components/Button';
 import Footer from './Footer';
 import VideoSetting from './UploadComponents/VideoSetting';
+import VideoUpload from './UploadComponents/VideoUpload';
 
 const cx = classNames.bind(styles);
 
 function Upload() {
     const [source, setSource] = useState();
     const [thumbArray, setThumbArray] = useState([]);
+    const [file, setFile] = useState(null);
     const [selectedFile, setSelectedFile] = useState({
-        file: null,
         fileName: null,
         duration: 0,
+        time: 0,
         size: 0,
     });
     const [changeUploadState, setChangeUploadState] = useState(true);
+
     const handleUploadFile = () => {
         document.getElementById('uploadFile').click();
     };
@@ -156,15 +159,16 @@ function Upload() {
 
     const getVideoInfo = (e) => {
         const file = e.target.files[0];
+        console.log(file);
         if (file) {
             const url = URL.createObjectURL(file);
             setSource(url);
+            setFile(file);
         }
         getVideoDuration(file)
             .then((duration) => {
                 setChangeUploadState(false);
                 setSelectedFile({
-                    file,
                     fileName: file?.name,
                     duration: convertHMS(duration),
                     time: duration,
@@ -229,7 +233,19 @@ function Upload() {
                             </div>
                         </PopperWrapper>
                     ) : (
-                        <VideoSetting selectedFile={selectedFile} thumbArray={thumbArray} source={source} />
+                        <>
+                            {file ? (
+                                <VideoSetting
+                                    selectedFile={selectedFile}
+                                    thumbArray={thumbArray}
+                                    source={source}
+                                    file={file}
+                                    setFile={setFile}
+                                />
+                            ) : (
+                                <VideoUpload getVideoInfo={getVideoInfo} />
+                            )}
+                        </>
                     )}
                 </div>
             </div>

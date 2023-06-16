@@ -1,13 +1,22 @@
+import { useContext } from 'react';
 import classNames from 'classnames/bind';
+
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 import { DecreaseIcon, EditVideoIcon, IncreaseIcon, SplitIcon } from '~/components/Icons';
-
 import styles from './UploadHeader.module.scss';
 import Button from '~/components/Button/Button';
+import { NotifyContextShow } from '~/contexts/NotifyContext';
 
 const cx = classNames.bind(styles);
 
 function UploadHeader({ selectedFile, thumbArray }) {
+    const showNotify = useContext(NotifyContextShow);
+
+    const handleEdit = (e) => {
+        e.preventDefault();
+        showNotify('Coming soon!');
+    };
+
     return (
         <PopperWrapper className={cx('noPadding')}>
             <div className={cx('grid')}>
@@ -30,7 +39,7 @@ function UploadHeader({ selectedFile, thumbArray }) {
                         </div>
                     </div>
                     <div className={cx('editBtnContainer')}>
-                        <Button upload leftIcon={<EditVideoIcon />}>
+                        <Button primary leftIcon={<EditVideoIcon />} onClick={handleEdit}>
                             Edit video
                         </Button>
                     </div>

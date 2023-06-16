@@ -6,10 +6,9 @@ import styles from './HeaderOnly.module.scss';
 const cx = classNames.bind(styles);
 
 function HeaderOnly({ children }) {
-    const state = true;
     return (
         <div className={cx('wrapper')}>
-            <Header className={cx(`${state ? 'spread' : ''}`)} />
+            <Header />
             <div className={cx('container')}>
                 <div className={cx('content')}>{children}</div>
             </div>

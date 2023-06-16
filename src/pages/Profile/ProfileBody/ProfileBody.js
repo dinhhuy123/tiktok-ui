@@ -4,6 +4,7 @@ import classNames from 'classnames/bind';
 import React, { useRef, useState } from 'react';
 import { LockProfileBodyIcon } from '~/components/Icons';
 import styles from './ProfileBody.module.scss';
+import { NavLink } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -50,10 +51,9 @@ function ProfileBody({ userProfile, videoList, stateOfCurrentUser }) {
                                 <div className={cx('userPostItem')}>
                                     <div className={cx('paddingTop')}>
                                         <div className={cx('divWrapper')}>
-                                            <a
+                                            <NavLink
                                                 className={cx('linkVideo')}
-                                                href={`/users/@${video.user.nickname}/video/${video.id}`}
-                                                id="linkVideo"
+                                                to={`/users/@${video.user.nickname}/video/${video.id}`}
                                                 onMouseOver={() => playVideo(index)}
                                                 onMouseLeave={() => pauseVideo(index)}
                                             >
@@ -80,7 +80,7 @@ function ProfileBody({ userProfile, videoList, stateOfCurrentUser }) {
                                                     </div>
                                                     <div className={cx('divFooter')}></div>
                                                 </div>
-                                            </a>
+                                            </NavLink>
                                         </div>
                                     </div>
                                 </div>

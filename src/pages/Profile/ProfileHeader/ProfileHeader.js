@@ -93,6 +93,7 @@ const MORE_ITEMS = [
 ];
 
 function ProfileHeader({ userProfile, stateOfCurrentUser, setModal, handlerFollow, followed }) {
+    console.log(userProfile);
     const handleButton = () => {
         return followed ? (
             <div className={cx('btnWrapper')}>
