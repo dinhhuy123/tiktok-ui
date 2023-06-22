@@ -22,7 +22,7 @@ function AccountPreview({ data }) {
                     <strong>{data.nickname}</strong>
                     {data.tick && <FontAwesomeIcon className={cx('check')} icon={faCheckCircle} />}
                 </p>
-                <p className={cx('name')}>{data.full_name}</p>
+                <p className={cx('name')}>{data.first_name + ' ' + data.last_name}</p>
                 <p className={cx('analytics')}>
                     <strong className={cx('value')}>{data.followers_count}</strong>
                     <span className={cx('label')}>Followers</span>

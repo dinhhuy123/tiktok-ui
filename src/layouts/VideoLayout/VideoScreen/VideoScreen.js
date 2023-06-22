@@ -1,18 +1,34 @@
 import classNames from 'classnames/bind';
 import styles from './VideoScreen.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClose, faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faClose, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useRef, useState } from 'react';
 import { MuteBtn, ReportIcon, VolumeBtn } from '~/components/Icons';
+import { useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
-function VideoScreen({ videoInfo }) {
+function VideoScreen({ videoInfo, indexOfVideo, handleNextVideo, handlePrevVideo }) {
     const [muted, setMuted] = useState(false);
     const [valueBar, setValueBar] = useState(0);
+    const [stopVideo, setStopVideo] = useState(false);
+    const [time, setTime] = useState('00:0' + 0);
+    const [progress, setProgress] = useState(0);
+    const [totalTime, setTotalTime] = useState('00:00');
     // const [followed, setFollowed] = useState(userProfile.is_followed);
     const volumeBarRef = useRef();
     const volumeCircleRef = useRef();
+    const videoRef = useRef();
+
+    const navigate = useNavigate();
+
+    const togglePlay = () => {
+        setStopVideo(!stopVideo);
+    };
+
+    useEffect(() => {
+        stopVideo ? videoRef.current.pause() : videoRef.current.play();
+    }, [stopVideo]);
 
     const handleVolume = (e) => {
         const value = +e.target.value;
@@ -32,27 +48,82 @@ function VideoScreen({ videoInfo }) {
         setMuted(!muted);
     };
 
+    const convertHMS = (value) => {
+        const sec = parseInt(value, 10);
+        let minutes = Math.floor(sec / 60);
+        let seconds = sec - minutes * 60;
+        if (minutes < 10) {
+            minutes = '0' + minutes;
+        }
+        if (seconds < 10) {
+            seconds = '0' + seconds;
+        }
+        return minutes + ':' + seconds;
+    };
+
+    const handleProgress = () => {
+        const duration = videoRef.current.duration;
+        const currentTime = videoRef.current.currentTime;
+        let sec = Math.floor(currentTime);
+        if (sec < 10) {
+            sec = '00:0' + sec;
+        } else {
+            sec = '00:' + sec;
+        }
+        if (sec >= 60) {
+            let minutes = Math.floor(sec / 60);
+            let seconds = sec - minutes * 60;
+            if (seconds < 10) {
+                seconds = '0' + seconds;
+            }
+            sec = '0' + minutes + ':' + seconds;
+        }
+        setTime(sec);
+        const progress = (currentTime / duration) * 100;
+        setProgress(progress);
+    };
+
     useEffect(() => {
         if (muted) {
             volumeBarRef.current.style.transform = `scaleY(0)`;
             volumeCircleRef.current.style.transform = `translateY(0)`;
+            videoRef.current.volume = 0;
         } else {
             const scale = valueBar / 100;
             volumeBarRef.current.style.transform = `scaleY(${scale})`;
             volumeCircleRef.current.style.transform = `translateY(${-valueBar * 0.75}px)`;
+            videoRef.current.volume = valueBar / 100;
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [muted]);
+
+    useEffect(() => {
+        videoRef.current.volume = valueBar / 100;
+    }, [valueBar]);
+
+    const handleBackBrowser = () => {
+        navigate(-1);
+    };
 
     return (
         <div className={cx('videoContainer')}>
             <div className={cx('videoPlayer')}>
                 <p className={cx('videoBackground')} style={{ backgroundImage: `url(${videoInfo.thumb_url})` }}></p>
-                <div className={cx('videoSpace')}>
+                <div className={cx('videoSpace')} onClick={togglePlay}>
                     <img className={cx('videoImage')} src={videoInfo.thumb_url} alt={videoInfo.id} />
-                    <video className={cx('video')} src={videoInfo.file_url}></video>
+                    <video
+                        onTimeUpdate={handleProgress}
+                        onLoadedData={(e) => {
+                            const duration = e.target.duration;
+                            setTotalTime(convertHMS(duration));
+                        }}
+                        ref={videoRef}
+                        loop
+                        className={cx('video')}
+                        src={videoInfo.file_url}
+                    />
                 </div>
-                <button className={cx('closeBtn')}>
+                <button className={cx('closeBtn')} onClick={handleBackBrowser}>
                     <FontAwesomeIcon icon={faClose} className={cx('closeIcon')} />
                 </button>
                 <div className={cx('reportBtn')}>
@@ -61,7 +132,16 @@ function VideoScreen({ videoInfo }) {
                     </span>
                     Report
                 </div>
-                <FontAwesomeIcon icon={faPlay} className={cx('playIcon')} />
+                {indexOfVideo > 0 && (
+                    <button className={cx('prevVideoBtn')} onClick={handlePrevVideo}>
+                        <FontAwesomeIcon icon={faChevronDown} className={cx('prevIcon')} />
+                    </button>
+                )}
+                <button className={cx('nextVideoBtn')}>
+                    <FontAwesomeIcon icon={faChevronDown} className={cx('nextIcon')} onClick={handleNextVideo} />
+                </button>
+                {stopVideo && <FontAwesomeIcon icon={faPlay} className={cx('playIcon')} />}
+
                 <div className={cx('volumeContainer')}>
                     <div className={cx('volumeControl')}>
                         <div className={cx('volumeControlProgress')}></div>
@@ -84,11 +164,11 @@ function VideoScreen({ videoInfo }) {
                 </div>
                 <div className={cx('progressBarContainer')}>
                     <div className={cx('progressBarControl')}>
-                        <div className={cx('progressBar')}>
-                            <div className={cx('progress')}></div>
-                        </div>
+                        <div className={cx('progressBar')} style={{ width: `${progress}%` }}></div>
                     </div>
-                    <div className={cx('timeProgress')}>00:00/00.40</div>
+                    <div className={cx('timeProgress')}>
+                        {time}/{totalTime}
+                    </div>
                 </div>
             </div>
         </div>

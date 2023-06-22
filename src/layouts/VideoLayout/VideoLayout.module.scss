@@ -14,7 +14,7 @@
 }
 
 .commentHeader {
-    // border-bottom: 1px solid rgba(22, 24, 35, 0.2);
+    border-bottom: 1px solid rgba(22, 24, 35, 0.2);
     padding: 32px 32px 0;
     position: relative;
     z-index: 10;
@@ -55,6 +55,27 @@
 .name {
     font-size: 1.4rem;
     line-height: 20px;
+}
+
+.videoSetting {
+    cursor: pointer;
+}
+
+.followingBtn {
+    color: rgb(22, 24, 35);
+    border-color: rgb(208, 209, 211);
+    font-weight: 600;
+    padding: 7px 16px;
+    &:hover {
+        background-color: rgb(248, 248, 248);
+        border-color: rgb(208, 209, 211);
+    }
+}
+
+.followBtn {
+    font-weight: 600;
+    padding: 7px 16px;
+    min-width: 106px;
 }
 
 .videoName {
@@ -117,128 +138,6 @@
     &:hover {
         background-color: rgba(22, 24, 35, 0.03);
     }
-}
-
-.commentBody {
-    width: 100%;
-    box-sizing: border-box;
-    background-color: rgb(248, 248, 248);
-    border-top: none;
-    border-bottom: 1px solid rgba(22, 24, 35, 0.2);
-    overflow: hidden;
-    -webkit-box-flex: 1;
-    flex-grow: 1;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-}
-
-.bodyContainer {
-    padding-top: 24px;
-    width: 100%;
-    overflow: hidden auto;
-    -webkit-box-flex: 1;
-    flex-grow: 1;
-    position: relative;
-    padding: 0px 32px 24px;
-}
-
-.content {
-    color: rgba(22, 24, 35, 0.5);
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 20px;
-    margin-top: 0px;
-    width: 100%;
-    padding: 0px 16px;
-    box-sizing: border-box;
-    display: flex;
-    -webkit-box-pack: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    align-items: center;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.commentFooter {
-    flex: 0 0 auto;
-    background-color: rgb(255, 255, 255);
-    margin: 0px 30px;
-    padding: 21px 0px;
-}
-
-.footerContainer {
-    display: flex;
-}
-
-.textContainer {
-    flex: 1 1 auto;
-}
-
-.text {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    background-color: rgba(22, 24, 35, 0.06);
-    box-sizing: border-box;
-    border: 1px solid transparent;
-    border-radius: 8px;
-    padding: 0px 9px;
-
-    &:focus-within {
-        border-color: rgba(22, 24, 35, 0.2);
-    }
-}
-
-.textCenter {
-    flex: 1 1 auto;
-    height: auto;
-    margin: 10px 8px 10px 0px;
-}
-
-.textStyle {
-    background-color: transparent;
-    border: none;
-    outline: none;
-    caret-color: var(--primary);
-    color: var(--text-color);
-    display: block;
-    overflow-y: hidden;
-    padding: 1px 0;
-    resize: none;
-    width: calc(100% - 40px);
-    height: 18px;
-    font-family: var(--font-family);
-    overflow: auto;
-}
-
-.emotionIcon,
-.atSignIcon {
-    flex: 0 0 32px;
-    width: 32px;
-    height: 32px;
-    padding: 5px;
-    margin: 3px;
-    cursor: pointer;
-    background-color: transparent;
-    border-radius: 8px;
-    &:hover {
-        background-color: rgba(0, 0, 0, 0.12);
-    }
-}
-
-.postBtn {
-    color: rgba(22, 24, 35, 0.34);
-    font-weight: 600;
-    cursor: default;
-    flex: 0 0 48px;
-    font-size: 14px;
-    line-height: 39px;
-    text-align: right;
-    margin-right: 4px;
 }
 
 // Tippy css

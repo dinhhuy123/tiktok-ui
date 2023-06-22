@@ -30,10 +30,11 @@
     text-align: center;
     color: rgba(22, 24, 35, 1);
     background-color: var(--white);
-    &:first-child:hover:not(:placeholder-shown) ~ .highlight-btn {
+    &:first-child:hover:not(:placeholder-shown) ~ .highlightBtn {
+        color: red;
         transform: translateX(0px);
     }
-    &:nth-child(2):hover:not(:placeholder-shown) ~ .highlight-btn {
+    &:nth-child(2):hover:not(:placeholder-shown) ~ .highlightBtn {
         transform: translateX(230px);
     }
 }
