@@ -9,12 +9,13 @@ import { Wrapper as PopperWrapper } from '~/components/Popper';
 import Image from '~/components/Image';
 import Button from '~/components/Button';
 import { MusicIcon } from '~/components/Icons';
-import { usePlayingOnScreen } from '~/hooks';
 import * as userService from '~/services/userService';
+import VideoControl from './VideoControl/VideoControl';
 
 const cx = classNames.bind(styles);
 
-function Video({ video, isFollowing }) {
+function Video({ videoArray, video, isFollowing, index, handleShowVideoModal }) {
+    const wrapperRef = useRef();
     const preview = () => {
         return (
             <div tabIndex="-1">
@@ -25,29 +26,23 @@ function Video({ video, isFollowing }) {
         );
     };
 
-    const [playing, setPlaying] = useState(false);
-    const videoRef = useRef(null);
-    const options = { root: null, rootMargin: '0px', threshold: 0.7 };
-    const isVisible = usePlayingOnScreen(options, videoRef);
     const [followed, setFollowed] = useState(video.user.is_followed);
 
     const currentUser = JSON.parse(localStorage.getItem('user'));
     const accessToken = currentUser && currentUser.meta.token ? currentUser.meta.token : '';
 
     useEffect(() => {
-        if (isVisible) {
-            if (!playing) {
-                videoRef.current.currentTime = 0;
-                videoRef.current.play();
-                setPlaying(true);
-            }
-        } else {
-            if (playing) {
-                videoRef.current.pause();
-                setPlaying(false);
-            }
-        }
-    }, [isVisible, playing]);
+        const optionsScroll = {
+            block: 'start',
+            behavior: 'smooth',
+        };
+        videoArray[index] = {
+            index: index,
+            data: video,
+            scrollVideo: wrapperRef.current.scrollIntoView.bind(wrapperRef.current, optionsScroll),
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handleFollowUser = (e) => {
         e.preventDefault();
@@ -90,7 +85,7 @@ function Video({ video, isFollowing }) {
     };
 
     return (
-        <div className={cx('video-wrapper')}>
+        <div className={cx('video-wrapper')} ref={wrapperRef}>
             <Tippy interactive delay={[200, 200]} offset={[-10, 2]} render={preview} placement="bottom-start">
                 <a className={cx('avatar')} href="/">
                     <Image className={cx('image')} src={video.user.avatar} alt={video.user.nickname} />
@@ -126,21 +121,12 @@ function Video({ video, isFollowing }) {
                     <div className={cx('video-container')}>
                         <div className={cx('user-video')}>
                             <canvas width="56.25" height="100" className={cx('video-canvas')}></canvas>
-                            <div className={cx('video')}>
-                                <div className={cx('outside')}>
-                                    <video
-                                        ref={videoRef}
-                                        className={cx('video-inside')}
-                                        controls
-                                        loop={true}
-                                        playsInline
-                                        poster={video.thumb_url}
-                                    >
-                                        <source src={video.file_url} type="video/mp4" />
-                                        Your browser does not support HTML video.
-                                    </video>
-                                </div>
-                            </div>
+                            <VideoControl
+                                videoArray={videoArray}
+                                handleShowVideoModal={handleShowVideoModal}
+                                video={video}
+                                index={index}
+                            />
                         </div>
                         <div className={cx('action')}>
                             <button onClick={handleLikeVideo} className={cx('action-container')}>

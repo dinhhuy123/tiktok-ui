@@ -1,9 +1,9 @@
-.videoLayout {
+.wrapper {
     display: flex;
     background-color: #010101;
     inset: 0;
     position: fixed;
-    z-index: 999999;
+    z-index: 10;
 }
 
 .commentContainer {

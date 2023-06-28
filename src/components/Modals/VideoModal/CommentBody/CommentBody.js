@@ -15,7 +15,7 @@ import Button from '~/components/Button/Button';
 
 const cx = classNames.bind(styles);
 
-function CommentBody({ isAuth, handleTime, commentState, videoId }) {
+function CommentBody({ isAuth, handleTime, commentState, videoId, showNotify }) {
     const [page, setPage] = useState(1);
     const [comments, setComments] = commentState;
     const [accessToken, setAccessToken] = useState('');
@@ -45,6 +45,7 @@ function CommentBody({ isAuth, handleTime, commentState, videoId }) {
                 newComments.splice(index, 1);
                 return newComments;
             });
+            showNotify('Deleted!');
         }
     };
 
@@ -55,7 +56,11 @@ function CommentBody({ isAuth, handleTime, commentState, videoId }) {
                     <div>Are you sure you want to delete this comment?</div>
                 </div>
             ),
-            agree: <div className={cx('general', 'delete')}>Delete</div>,
+            agree: (
+                <div className={cx('general', 'delete')} onClick={() => deleteCmt(index, commentId)}>
+                    Delete
+                </div>
+            ),
             cancel: <div className={cx('general', 'cancel')}>Cancel</div>,
         };
         showConfirmModal(dataModal);

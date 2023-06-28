@@ -5,7 +5,7 @@ function usePlayingOnScreen(options, targetRef) {
 
     const callbackFunc = (entries) => {
         const [entry] = entries;
-        setIsVisible(entry.isInteractive);
+        setIsVisible(entry.isIntersecting);
     };
 
     const optionMemo = useMemo(() => {
@@ -16,6 +16,7 @@ function usePlayingOnScreen(options, targetRef) {
         const observer = new IntersectionObserver(callbackFunc, optionMemo);
         const currentTarget = targetRef.current;
         if (currentTarget) {
+            currentTarget.inView = true;
             observer.observe(currentTarget);
         }
         return () => {

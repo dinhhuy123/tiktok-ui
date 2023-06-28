@@ -1,10 +1,10 @@
-import { useContext, useEffect, useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
+// import { useParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import HeadlessTippy from '@tippyjs/react/headless';
 import { parseISO, formatDistanceToNow } from 'date-fns';
 
-import styles from './VideoLayout.module.scss';
+import styles from './VideoModal.module.scss';
 import * as userService from '~/services/userService';
 import Image from '~/components/Image';
 import { MusicIcon, MoreIcon } from '~/components/Icons';
@@ -18,71 +18,21 @@ import { NotifyContextShow } from '~/contexts/NotifyContext';
 
 const cx = classNames.bind(styles);
 
-function VideoLayout() {
-    const [videoInfo, setVideoInfo] = useState({});
-    const [userProfile, setUserProfile] = useState({});
+function VideoModal(props) {
+    console.log(props);
+    const { userProfile, videoInfo, index, handleClose, handleNextVideo, handlePrevVideo } = props;
+    const showNotify = useContext(NotifyContextShow);
+    const [followed, setFollowed] = useState(userProfile.is_followed);
     const [comments, setComments] = useState([]);
 
-    const [followed, setFollowed] = useState(userProfile.is_followed);
-
-    const { nickname, id } = useParams();
-
-    const showNotify = useContext(NotifyContextShow);
+    useEffect(() => {
+        console.log(window.location);
+        window.history.replaceState(null, '', `/users/@${videoInfo.user.nickname}/video/${videoInfo.id}`);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const currentUser = JSON.parse(localStorage.getItem('user'));
     const accessToken = currentUser && currentUser.meta.token ? currentUser.meta.token : '';
-
-    const isAuth = (data) => {
-        return data === currentUser.data.nickname;
-    };
-
-    let indexOfVideo = useMemo(() => {
-        if (Object.keys(userProfile).length !== 0 && Object.keys(videoInfo).length !== 0) {
-            for (let i = 0; i < userProfile.videos.length; i++) {
-                if (userProfile.videos[i].id === videoInfo.id) {
-                    return i;
-                }
-            }
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userProfile, videoInfo]);
-
-    const handleNextVideo = () => {
-        if (indexOfVideo >= userProfile.videos.length - 1) {
-            return;
-        } else {
-            indexOfVideo++;
-            userService.getAVideo(userProfile.videos[indexOfVideo].id, accessToken).then((res) => setVideoInfo(res));
-        }
-    };
-
-    const handlePrevVideo = () => {
-        if (indexOfVideo <= 0) {
-            return;
-        } else {
-            indexOfVideo--;
-            userService.getAVideo(userProfile.videos[indexOfVideo].id, accessToken).then((res) => setVideoInfo(res));
-        }
-    };
-
-    useEffect(() => {
-        if (id) {
-            userService.getAVideo(id, accessToken).then((res) => setVideoInfo(res));
-        }
-        if (nickname) {
-            userService
-                .getUserProfile({ nickname, accessToken })
-                .then((res) => {
-                    setUserProfile(res);
-                    setFollowed(res.is_followed);
-                    // setFollowed(res.is_followed);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id, nickname]);
 
     const handleTime = (time) => {
         let timeAgo = '';
@@ -92,6 +42,10 @@ function VideoLayout() {
             timeAgo = `${timePeriod} ago`;
         }
         return timeAgo;
+    };
+
+    const isAuth = () => {
+        return true;
     };
 
     const handleFollowUser = (e) => {
@@ -128,12 +82,14 @@ function VideoLayout() {
     };
 
     return (
-        <div className={cx('videoLayout')}>
+        <div className={cx('wrapper')}>
             <VideoScreen
+                userProfile={userProfile}
                 videoInfo={videoInfo}
-                indexOfVideo={indexOfVideo}
+                indexOfVideo={index}
                 handleNextVideo={handleNextVideo}
                 handlePrevVideo={handlePrevVideo}
+                handleClose={handleClose}
             />
             <div className={cx('commentContainer')}>
                 <div className={cx('commentHeader')}>
@@ -149,7 +105,7 @@ function VideoLayout() {
                                 </span>
                             </div>
                         </a>
-                        {isAuth(nickname.slice(1, nickname.length)) ? (
+                        {true ? (
                             <HeadlessTippy
                                 // visible
                                 interactive
@@ -201,12 +157,13 @@ function VideoLayout() {
                     isAuth={isAuth}
                     handleTime={handleTime}
                     commentState={[comments, setComments]}
-                    videoId={id}
+                    videoId={videoInfo.id}
+                    showNotify={showNotify}
                 />
-                <CommentFooter setComments={setComments} videoId={id} showNotify={showNotify} />
+                <CommentFooter setComments={setComments} videoId={videoInfo.id} showNotify={showNotify} />
             </div>
         </div>
     );
 }
 
-export default VideoLayout;
+export default VideoModal;

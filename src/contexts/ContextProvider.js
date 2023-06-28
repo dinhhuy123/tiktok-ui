@@ -1,10 +1,13 @@
 import NotifyProVider from './NotifyContext';
 import ModalProvider from './ModalContext';
+import VideoModalProvider from './VideoModalContext';
 
 function ContextProvider({ children }) {
     return (
         <NotifyProVider>
-            <ModalProvider>{children}</ModalProvider>
+            <ModalProvider>
+                <VideoModalProvider>{children}</VideoModalProvider>
+            </ModalProvider>
         </NotifyProVider>
     );
 }

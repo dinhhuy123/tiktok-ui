@@ -2,6 +2,7 @@
     display: flex;
     position: relative;
     padding: 20px 0;
+    scroll-margin-top: var(--default-layout-header-height);
 }
 
 .avatar {
@@ -134,36 +135,6 @@
     height: 100%;
 }
 
-.video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-.outside {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    position: relative;
-    background-color: black;
-    border-radius: 8px;
-}
-
-.video-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.video-inside {
-    display: block;
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-}
-
 .action {
     display: flex;
     flex-direction: column;
@@ -220,8 +191,8 @@
     text-align: center;
 }
 
-@media screen and (max-width: 1071px) {
+@media screen and (max-width: 1919px) {
     .user-video {
-        height: 480px;
+        height: calc(450px + ((100vw - 768px) / 1152) * 200);
     }
 }

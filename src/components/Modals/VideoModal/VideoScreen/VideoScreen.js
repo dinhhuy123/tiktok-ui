@@ -4,11 +4,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faClose, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useRef, useState } from 'react';
 import { MuteBtn, ReportIcon, VolumeBtn } from '~/components/Icons';
-import { useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
-function VideoScreen({ videoInfo, indexOfVideo, handleNextVideo, handlePrevVideo }) {
+function VideoScreen({ userProfile, videoInfo, indexOfVideo, handleNextVideo, handlePrevVideo, handleClose }) {
     const [muted, setMuted] = useState(false);
     const [valueBar, setValueBar] = useState(0);
     const [stopVideo, setStopVideo] = useState(false);
@@ -19,8 +18,6 @@ function VideoScreen({ videoInfo, indexOfVideo, handleNextVideo, handlePrevVideo
     const volumeBarRef = useRef();
     const volumeCircleRef = useRef();
     const videoRef = useRef();
-
-    const navigate = useNavigate();
 
     const togglePlay = () => {
         setStopVideo(!stopVideo);
@@ -101,8 +98,8 @@ function VideoScreen({ videoInfo, indexOfVideo, handleNextVideo, handlePrevVideo
         videoRef.current.volume = valueBar / 100;
     }, [valueBar]);
 
-    const handleBackBrowser = () => {
-        navigate(-1);
+    const closeVideoModal = () => {
+        handleClose();
     };
 
     return (
@@ -123,7 +120,7 @@ function VideoScreen({ videoInfo, indexOfVideo, handleNextVideo, handlePrevVideo
                         src={videoInfo.file_url}
                     />
                 </div>
-                <button className={cx('closeBtn')} onClick={handleBackBrowser}>
+                <button className={cx('closeBtn')} onClick={closeVideoModal}>
                     <FontAwesomeIcon icon={faClose} className={cx('closeIcon')} />
                 </button>
                 <div className={cx('reportBtn')}>
@@ -133,12 +130,12 @@ function VideoScreen({ videoInfo, indexOfVideo, handleNextVideo, handlePrevVideo
                     Report
                 </div>
                 {indexOfVideo > 0 && (
-                    <button className={cx('prevVideoBtn')} onClick={handlePrevVideo}>
+                    <button className={cx('prevVideoBtn')} onClick={() => handlePrevVideo(indexOfVideo)}>
                         <FontAwesomeIcon icon={faChevronDown} className={cx('prevIcon')} />
                     </button>
                 )}
-                <button className={cx('nextVideoBtn')}>
-                    <FontAwesomeIcon icon={faChevronDown} className={cx('nextIcon')} onClick={handleNextVideo} />
+                <button className={cx('nextVideoBtn')} onClick={() => handleNextVideo(indexOfVideo)}>
+                    <FontAwesomeIcon icon={faChevronDown} className={cx('nextIcon')} />
                 </button>
                 {stopVideo && <FontAwesomeIcon icon={faPlay} className={cx('playIcon')} />}
 
@@ -159,7 +156,7 @@ function VideoScreen({ videoInfo, indexOfVideo, handleNextVideo, handlePrevVideo
                         </div>
                     </div>
                     <button className={cx('volumeBtn')} onClick={handleToggleMute}>
-                        {muted ? <MuteBtn className={cx('muteIcon')} /> : <VolumeBtn className={cx('volumeIon')} />}
+                        {muted ? <MuteBtn className={cx('muteIcon')} /> : <VolumeBtn className={cx('volumeIcon')} />}
                     </button>
                 </div>
                 <div className={cx('progressBarContainer')}>
