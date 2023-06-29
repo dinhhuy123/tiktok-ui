@@ -15,6 +15,14 @@ import VideoControl from './VideoControl/VideoControl';
 const cx = classNames.bind(styles);
 
 function Video({ videoArray, video, isFollowing, index, handleShowVideoModal }) {
+    const {
+        meta: {
+            video: { resolution_x: videoWidth, resolution_y: videoHeight },
+        },
+    } = video;
+
+    const verticalVideo = videoHeight / videoWidth > 1;
+
     const wrapperRef = useRef();
     const preview = () => {
         return (
@@ -119,8 +127,13 @@ function Video({ videoArray, video, isFollowing, index, handleShowVideoModal }) 
                     </div>
 
                     <div className={cx('video-container')}>
-                        <div className={cx('user-video')}>
-                            <canvas width="56.25" height="100" className={cx('video-canvas')}></canvas>
+                        <div className={cx('userVideo', `${verticalVideo ? 'vertical' : 'horizontal'}`)}>
+                            {verticalVideo ? (
+                                <canvas width="56.25" height="100" className={cx('verticalVideoCanvas')}></canvas>
+                            ) : (
+                                <canvas width="100" height="56.25" className={cx('horizontalVideoCanvas')}></canvas>
+                            )}
+
                             <VideoControl
                                 videoArray={videoArray}
                                 handleShowVideoModal={handleShowVideoModal}

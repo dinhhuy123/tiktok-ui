@@ -3,6 +3,7 @@
     position: relative;
     padding: 20px 0;
     scroll-margin-top: var(--default-layout-header-height);
+    max-width: 692px;
 }
 
 .avatar {
@@ -23,7 +24,8 @@
 
 .container {
     margin-left: 12px;
-    width: 500px;
+    width: 624px;
+    flex: 1 1 624px;
 }
 
 .user-name {
@@ -108,7 +110,9 @@
 
 .video-container {
     display: flex;
+    flex-direction: row;
     align-items: flex-end;
+    height: 100%;
     &::after {
         content: '';
         position: absolute;
@@ -121,18 +125,31 @@
     }
 }
 
-.user-video {
+.userVideo {
     margin-right: 20px;
-    height: 600px;
     position: relative;
     overflow: hidden;
     background-size: cover;
 }
 
-.video-canvas {
+.vertical {
+    height: 600px;
+}
+
+.horizontal {
+    width: 600px;
+}
+
+.verticalVideoCanvas {
     display: block;
     visibility: hidden;
     height: 100%;
+}
+
+.horizontalVideoCanvas {
+    display: block;
+    visibility: hidden;
+    width: 100%;
 }
 
 .action {
@@ -192,7 +209,10 @@
 }
 
 @media screen and (max-width: 1919px) {
-    .user-video {
+    .vertical {
         height: calc(450px + ((100vw - 768px) / 1152) * 200);
+    }
+    .horizontal {
+        width: calc(450px + ((100vw - 768px) / 1152) * 200);
     }
 }
