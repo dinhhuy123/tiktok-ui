@@ -31,7 +31,7 @@
     color: rgba(22, 24, 35, 1);
     background-color: var(--white);
     &:first-child:hover:not(:placeholder-shown) ~ .highlightBtn {
-        color: red;
+        // color: red;
         transform: translateX(0px);
     }
     &:nth-child(2):hover:not(:placeholder-shown) ~ .highlightBtn {

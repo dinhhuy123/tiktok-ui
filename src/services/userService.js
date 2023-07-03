@@ -102,25 +102,27 @@ export const unFollowAnUser = async ({ userId, accessToken }) => {
     }
 };
 
-export const likeVideo = async ({ userId, accessToken }) => {
+export const likeVideo = async (videoId, accessToken) => {
     try {
-        return await httpRequest.post(`users/${userId}/like`, [], {
+        const res = await httpRequest.post(`videos/${videoId}/like`, [], {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
         });
+        return res.data;
     } catch (error) {
         console.log(error);
     }
 };
 
-export const unLikeVideo = async ({ userId, accessToken }) => {
+export const unLikeVideo = async (videoId, accessToken) => {
     try {
-        return await httpRequest.post(`users/${userId}/unlike`, [], {
+        const res = await httpRequest.post(`videos/${videoId}/unlike`, [], {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
         });
+        return res.data;
     } catch (error) {
         console.log(error);
     }

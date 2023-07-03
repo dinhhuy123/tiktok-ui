@@ -9,7 +9,7 @@ function useVideoModal(ModalComponent) {
     const showVideoModal = () => {
         setIsVideoModalShow(true);
         document.body.classList.add('videoModal');
-
+        console.log('videoModalContext: ', window.location);
         const { pathname, hash, search } = window.location;
         const urlOrigin = pathname + hash + search;
         setUrlStart(urlOrigin);
@@ -19,6 +19,7 @@ function useVideoModal(ModalComponent) {
         setIsVideoModalShow(false);
         document.body.classList.remove('videoModal');
         // window.history.go(-1);
+        console.log(urlStart);
         window.history.replaceState(null, '', urlStart);
     };
 

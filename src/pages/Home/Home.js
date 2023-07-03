@@ -2,20 +2,41 @@ import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 import { Virtuoso } from 'react-virtuoso';
 import styles from './Home.module.scss';
-import Video from '~/layouts/components/Video';
+import Video from '~/components/Video';
 import * as userService from '~/services/userService';
 import { VideoModalContextShow } from '~/contexts/VideoModalContext';
 
 const cx = classNames.bind(styles);
 
-const INIT_PAGE = 1;
-
 function Home() {
-    const [videos, setVideos] = useState([]);
-    const [page, setPage] = useState(INIT_PAGE);
-    const [noMoreVideo, setNoMoreVideo] = useState(false);
-
     const videoArrayRef = useRef([]);
+
+    const pageRandom = useRef([]);
+
+    const handleRandomPage = (min, max) => {
+        const countPage = max + 1 - min;
+        const randomList = pageRandom.current;
+        let page;
+
+        if (randomList.length >= countPage) {
+            randomList.length === countPage && randomList.push(max);
+            page = ++randomList[randomList.length - 1];
+
+            return page;
+        }
+
+        do {
+            page = Math.floor(Math.random() * countPage + min);
+        } while (randomList.includes(page));
+
+        randomList.push(page);
+
+        return page;
+    };
+
+    const [videos, setVideos] = useState([]);
+    const [page, setPage] = useState(handleRandomPage(1, 10));
+    const [noMoreVideo, setNoMoreVideo] = useState(false);
 
     const currentUser = JSON.parse(localStorage.getItem('user'));
     const accessToken = currentUser && currentUser.meta.token ? currentUser.meta.token : '';
@@ -24,20 +45,19 @@ function Home() {
     const [isVideoModalShow, showVideoModal] = videoModalState;
 
     const loadMoreVideos = useCallback(() => {
-        return setTimeout(() => {
-            userService
-                .getVideos({ type: 'for-you', page, accessToken: accessToken })
-                .then((res) => {
-                    if (Array.isArray(res.data)) {
-                        setVideos((prev) => [...prev, ...res.data]);
-                        setPage((prev) => prev + 1);
-                    }
-                    if (res.data.length === 0 || page === res.meta.pagination.total) {
-                        setNoMoreVideo(true);
-                    }
-                })
-                .catch((err) => console.log(err));
+        if (page < 1) return;
+        return setTimeout(async () => {
+            setPage(handleRandomPage(1, 10));
+            const response = await userService.getVideos({ type: 'for-you', page, accessToken: accessToken });
+            if (Array.isArray(response.data)) {
+                response.data.sort(() => Math.random() - 0.5);
+                setVideos([...videos, ...response.data]);
+            }
+            if (response.data.length === 0 || page === response.meta.pagination.total) {
+                setNoMoreVideo(true);
+            }
         }, 300);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [page, accessToken]);
 
     useEffect(() => {
@@ -45,6 +65,8 @@ function Home() {
         return () => clearTimeout(timeForLoading);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    // console.log();
 
     const handleShowVideoModal = (video, index) => {
         videoArrayRef.current[index].scrollVideo();

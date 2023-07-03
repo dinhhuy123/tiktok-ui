@@ -1,5 +1,6 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
+import VideoSnapshot from 'video-snapshot';
 
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 import { DecreaseIcon, EditVideoIcon, IncreaseIcon, SplitIcon } from '~/components/Icons';
@@ -9,8 +10,21 @@ import { NotifyContextShow } from '~/contexts/NotifyContext';
 
 const cx = classNames.bind(styles);
 
-function UploadHeader({ selectedFile, thumbArray }) {
+function UploadHeader({ convertHMS, totalTime, file, thumbArray }) {
+    const [imgSrc, setImgSrc] = useState('');
     const showNotify = useContext(NotifyContextShow);
+
+    useEffect(() => {
+        if (!file) {
+            return;
+        }
+        const createImg = async () => {
+            const snapImg = new VideoSnapshot(file);
+            const previewSrc = await snapImg.takeSnapshot();
+            setImgSrc(previewSrc);
+        };
+        createImg();
+    }, [file]);
 
     const handleEdit = (e) => {
         e.preventDefault();
@@ -27,14 +41,14 @@ function UploadHeader({ selectedFile, thumbArray }) {
                         </div>
                         <div className={cx('image')}>
                             <div className={cx('card')}>
-                                <img src={thumbArray[0]} alt="imageCard" className={cx('imageCard')} />
+                                {imgSrc && <img src={imgSrc} alt="imageCard" className={cx('imageCard')} />}
                             </div>
                         </div>
                         <div className={cx('videoImageDescContainer')}>
-                            <span className={cx('videoImageDescName')}>{selectedFile.fileName}</span>
+                            <span className={cx('videoImageDescName')}>{file.name}</span>
                             <div className={cx('videoImageDescTime')}>
-                                <span>{`00:00 - ${selectedFile.duration}`}</span>
-                                <span>{`${Math.floor(selectedFile.time + 1)}s`}</span>
+                                <span>00:00</span> - <span>{convertHMS(totalTime)}</span>
+                                <span>{convertHMS(totalTime, true)}</span>
                             </div>
                         </div>
                     </div>

@@ -1,6 +1,15 @@
 .discoverWrapper {
-    border-top: 1px solid #e3e3e4;
+    position: relative;
     padding-bottom: 8px;
+    &::before {
+        content: '';
+        position: absolute;
+        left: 8px;
+        right: 8px;
+        top: 0;
+        height: 1px;
+        background: rgba(22, 24, 35, 0.12);
+    }
 }
 
 .label {

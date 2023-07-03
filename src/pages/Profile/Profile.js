@@ -18,7 +18,7 @@ function Profile() {
     const [accessToken, setAccessToken] = useState('');
     const [followed, setFollowed] = useState(userProfile.is_followed);
     const [videoList, setVideoList] = useState([]);
-    const { setShowLoginModal } = useContext(ModalContextShow);
+    const { showLoginModal } = useContext(ModalContextShow);
     useEffect(() => {
         if (nickname) {
             const currentUser = JSON.parse(localStorage.getItem('user'));
@@ -72,7 +72,7 @@ function Profile() {
                     });
             }
         } else {
-            setShowLoginModal(true);
+            showLoginModal();
         }
     };
 

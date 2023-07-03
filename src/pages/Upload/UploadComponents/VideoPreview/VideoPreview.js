@@ -17,7 +17,18 @@ import { ModalContextShow } from '~/contexts/ModalContext';
 
 const cx = classNames.bind(styles);
 
-function VideoPreview({ changeBtn, setChangeBtn, selectedFile, userProfile, source, setFile, musicValue }) {
+function VideoPreview({
+    changeBtn,
+    setChangeBtn,
+    userProfile,
+    source,
+    file,
+    setFile,
+    musicValue,
+    totalTime,
+    setTotalTime,
+    convertHMS,
+}) {
     const videoPreviewRef = useRef();
     const [progress, setProgress] = useState(0);
     const [time, setTime] = useState('00:0' + 0);
@@ -90,6 +101,10 @@ function VideoPreview({ changeBtn, setChangeBtn, selectedFile, userProfile, sour
                         <div id="canvasContainer" className={cx('canvasContainer')}>
                             <video
                                 onTimeUpdate={handleProgress}
+                                onLoadedData={(e) => {
+                                    const duration = e.target.duration;
+                                    setTotalTime(duration);
+                                }}
                                 src={source}
                                 preload="auto"
                                 className={cx('videoPreview')}
@@ -110,7 +125,7 @@ function VideoPreview({ changeBtn, setChangeBtn, selectedFile, userProfile, sour
                                             </div>
                                         )}
                                         <div className={cx('playTime')}>
-                                            {time} / {selectedFile.duration}
+                                            {time} / {convertHMS(totalTime)}
                                         </div>
                                     </div>
                                     <div className={cx('operationBtn')}>
@@ -189,7 +204,7 @@ function VideoPreview({ changeBtn, setChangeBtn, selectedFile, userProfile, sour
                     <span>
                         <VideoNameIcon className={cx('fileIcon')} />
                     </span>
-                    <div className={cx('fileName')}>{selectedFile.fileName}</div>
+                    <div className={cx('fileName')}>{file.name}</div>
                 </div>
                 <div className={cx('changeVideoBtn')} onClick={changeVideo}>
                     Change Video

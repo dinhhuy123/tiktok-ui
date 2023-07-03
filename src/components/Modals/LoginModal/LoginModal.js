@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './LoginModal.module.scss';
 import {
@@ -15,7 +15,6 @@ import {
 } from '~/components/Icons';
 import Menu from './Menu';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
-import { ModalContextShow } from '~/contexts/ModalContext';
 
 const cx = classNames.bind(styles);
 
@@ -112,9 +111,9 @@ const SIGNUP_ITEMS = [
     },
 ];
 
-function LoginModal() {
+function LoginModal(props) {
+    const { handleClose } = props;
     const [changeType, setChangeType] = useState(false);
-    const { setShowLoginModal } = useContext(ModalContextShow);
 
     const handledChange = (e) => {
         e.preventDefault();
@@ -124,7 +123,7 @@ function LoginModal() {
         <div className={cx('modal')}>
             <PopperWrapper className={cx('modalWrapper', 'noPadding')}>
                 <div className={cx('modalContainer')}>
-                    <button onClick={() => setShowLoginModal(false)} className={cx('closeBtn')}>
+                    <button onClick={handleClose} className={cx('closeBtn')}>
                         <ModalXmarkIcon />
                     </button>
                     <div className={cx(`${!changeType ? 'modalBodyLogin' : 'modalBodySignUp'}`)}>

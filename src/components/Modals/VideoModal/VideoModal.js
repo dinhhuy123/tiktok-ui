@@ -26,7 +26,7 @@ function VideoModal(props) {
     const [comments, setComments] = useState([]);
 
     useEffect(() => {
-        console.log(window.location);
+        console.log('videoModal: ', window.location);
         window.history.replaceState(null, '', `/users/@${videoInfo.user.nickname}/video/${videoInfo.id}`);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

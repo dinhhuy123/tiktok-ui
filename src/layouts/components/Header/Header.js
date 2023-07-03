@@ -26,7 +26,7 @@ import {
     DarkModeIcon,
 } from '~/components/Icons';
 import Image from '~/components/Image';
-import Search from '../Search';
+import Search from './Search';
 import Notifications from './Notifications';
 import * as authService from '~/services/authService';
 

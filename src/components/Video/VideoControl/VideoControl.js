@@ -9,8 +9,8 @@ import { usePlayingOnScreen } from '~/hooks';
 const cx = classNames.bind(styles);
 
 function VideoControl({ handleShowVideoModal, video, index }) {
-    const [muted, setMuted] = useState(false);
-    const [valueBar, setValueBar] = useState(0);
+    const [muted, setMuted] = useState(true);
+    const [valueBar, setValueBar] = useState(40);
     const [isPlaying, setIsPlaying] = useState(true);
     const [isStop, setIsStop] = useState(false);
     const [time, setTime] = useState('00:0' + 0);
@@ -54,7 +54,7 @@ function VideoControl({ handleShowVideoModal, video, index }) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isVisible, isPlaying]);
 
-    const handleVolume = (e) => {
+    const handleVolumeChange = (e) => {
         const value = +e.target.value;
         setValueBar(value);
         const scale = valueBar / 100;
@@ -115,7 +115,7 @@ function VideoControl({ handleShowVideoModal, video, index }) {
         } else {
             const scale = valueBar / 100;
             volumeBarRef.current.style.transform = `scaleY(${scale})`;
-            volumeCircleRef.current.style.transform = `translateY(${-valueBar * 0.75}px)`;
+            volumeCircleRef.current.style.transform = `translateY(${-valueBar * 0.4}px)`;
             videoRef.current.volume = valueBar / 100;
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -138,6 +138,7 @@ function VideoControl({ handleShowVideoModal, video, index }) {
                     className={cx('videoInside')}
                     loop={true}
                     playsInline
+                    muted={muted}
                     poster={video.thumb_url}
                 >
                     <source src={video.file_url} type="video/mp4" />
@@ -171,7 +172,7 @@ function VideoControl({ handleShowVideoModal, video, index }) {
                             max="100"
                             step="1"
                             className={cx('volumeRange')}
-                            onChange={handleVolume}
+                            onChange={handleVolumeChange}
                         ></input>
                     </div>
                 </div>

@@ -1,13 +1,51 @@
 import { useEffect, useRef, useState } from 'react';
+import VideoSnapshot from 'video-snapshot';
 import classNames from 'classnames/bind';
 import styles from './VideoCover.module.scss';
 
 const cx = classNames.bind(styles);
 
-function VideoCover({ thumbArray, source, timeCoverRef }) {
+const imageNumber = 8;
+
+const timeDelay = 100;
+
+function VideoCover({ source, timeCoverRef, file }) {
     const videoRef = useRef();
     const [sliderValue, setSliderValue] = useState(4);
     const [videoDuration, setVideoDuration] = useState();
+    const [thumbImages, setThumbImages] = useState(Array(imageNumber).fill(''));
+
+    useEffect(() => {
+        if (!videoDuration || !file) {
+            return;
+        }
+
+        const videoSnapshot = new VideoSnapshot(file);
+        const eachPart = videoDuration / (imageNumber - 1);
+
+        const generateThumb = async () => {
+            const imgsArr = [];
+
+            for (let i = 0; i < imageNumber; i++) {
+                imgsArr.push(videoSnapshot.takeSnapshot(eachPart * i));
+            }
+
+            const previewUrls = await Promise.all(imgsArr);
+
+            previewUrls.forEach((url, index) => {
+                setTimeout(
+                    () =>
+                        setThumbImages((prev) => {
+                            const newItems = [...prev];
+                            newItems[index] = url;
+                            return newItems;
+                        }),
+                    timeDelay * index,
+                );
+            });
+        };
+        generateThumb();
+    }, [file, videoDuration]);
 
     useEffect(() => {
         const currentTime = (videoDuration / 600) * sliderValue;
@@ -24,9 +62,12 @@ function VideoCover({ thumbArray, source, timeCoverRef }) {
             </div>
             <div className={cx('imagesList')}>
                 <div id="images" className={cx('images')}>
-                    {thumbArray.map((src, id) => (
-                        <img draggable="false" className={cx('imgGenerate')} key={id} src={src} alt="noImage" />
-                    ))}
+                    {thumbImages.map(
+                        (src, id) =>
+                            src && (
+                                <img draggable="false" className={cx('imgGenerate')} key={id} src={src} alt="noImage" />
+                            ),
+                    )}
                 </div>
                 <div className={cx('videos')} id="videos" style={{ '--slide-data': sliderValue + 'px' }}>
                     <div className={cx('chosen')}>

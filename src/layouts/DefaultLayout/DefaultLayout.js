@@ -14,7 +14,7 @@ const cx = classNames.bind(styles);
 function DefaultLayout({ children }) {
     const [height, setHeight] = useState(0);
 
-    const { setShowLoginModal } = useContext(ModalContextShow);
+    const { showLoginModal } = useContext(ModalContextShow);
 
     useEffect(() => {
         window.onscroll = () => {
@@ -29,9 +29,11 @@ function DefaultLayout({ children }) {
 
     return (
         <div className={cx('wrapper')}>
-            <Header onClick={() => setShowLoginModal(true)} />
+            <Header onClick={showLoginModal} />
             <div className={cx('container')}>
-                <Sidebar className={cx('sidebar')} onClick={() => setShowLoginModal(true)} />
+                <div className={cx('sidebar')}>
+                    <Sidebar onClick={showLoginModal} />
+                </div>
                 <div className={cx('content')}>{children}</div>
             </div>
             <div className={cx('getApp')} id="toTop">

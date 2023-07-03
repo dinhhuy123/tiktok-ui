@@ -26,6 +26,13 @@
     margin-left: 12px;
     width: 624px;
     flex: 1 1 624px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.textContainer {
+    margin-right: 114px;
 }
 
 .user-name {
@@ -69,7 +76,7 @@
     padding-top: 5px;
     padding-bottom: 5px;
     position: absolute;
-    top: 8px;
+    top: 25px;
     right: 0;
 }
 
@@ -186,6 +193,10 @@
     color: rgb(22, 24, 35);
     width: 24px;
     height: 24px;
+}
+
+.likeIcon {
+    color: red;
 }
 
 .like-action {

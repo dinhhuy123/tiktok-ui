@@ -17,15 +17,17 @@ import { NotifyContextShow } from '~/contexts/NotifyContext';
 
 const cx = classNames.bind(styles);
 
-function VideoSetting({ selectedFile, thumbArray, source, file, setFile }) {
+function VideoSetting({ thumbArray, source, file, setFile }) {
+    console.log(file);
     const timeCoverRef = useRef(0);
     const currentUser = JSON.parse(localStorage.getItem('user'));
     const accessToken = currentUser && currentUser.meta.token ? currentUser.meta.token : '';
 
     const [userProfile, setUserProfile] = useState({});
+    const [totalTime, setTotalTime] = useState('00:00');
     const [limit, setLimit] = useState(false);
     const [copyrightSwitch, setCopyrightSwitch] = useState(false);
-    const [caption, setCaption] = useState(selectedFile.fileName);
+    const [caption, setCaption] = useState(file.name);
     const [changeBtn, setChangeBtn] = useState(false);
     const [viewable, setViewable] = useState('Public');
     const [musicValue, setMusicValue] = useState(
@@ -37,6 +39,21 @@ function VideoSetting({ selectedFile, thumbArray, source, file, setFile }) {
     const showNotify = useContext(NotifyContextShow);
 
     // console.log(file.name);
+
+    const convertHMS = (value, style = false) => {
+        const sec = parseInt(value, 10);
+        let minutes = Math.floor(sec / 60);
+        let seconds = sec - minutes * 60;
+        let time;
+        if (style) {
+            time = minutes > 0 ? `${minutes}m${seconds}s` : `${seconds}s`;
+        } else {
+            minutes = minutes < 10 ? `0${minutes}` : minutes;
+            seconds = seconds < 10 ? `0${seconds}` : seconds;
+            time = minutes + ':' + seconds;
+        }
+        return time;
+    };
 
     const handleViewable = (viewable) => {
         setViewable(viewable);
@@ -106,7 +123,7 @@ function VideoSetting({ selectedFile, thumbArray, source, file, setFile }) {
 
     return (
         <>
-            <UploadHeader selectedFile={selectedFile} thumbArray={thumbArray} />
+            <UploadHeader convertHMS={convertHMS} totalTime={totalTime} file={file} />
             <PopperWrapper className={cx('noPadding')}>
                 <div className={cx('uploadVideoContainer')}>
                     <div className={cx('postTitle')}>
@@ -120,11 +137,14 @@ function VideoSetting({ selectedFile, thumbArray, source, file, setFile }) {
                             <VideoPreview
                                 changeBtn={changeBtn}
                                 setChangeBtn={setChangeBtn}
-                                selectedFile={selectedFile}
                                 userProfile={userProfile}
                                 source={source}
+                                file={file}
                                 setFile={setFile}
                                 musicValue={musicValue}
+                                totalTime={totalTime}
+                                setTotalTime={setTotalTime}
+                                convertHMS={convertHMS}
                             />
                         </div>
                         <div className={cx('setting')}>
@@ -143,7 +163,12 @@ function VideoSetting({ selectedFile, thumbArray, source, file, setFile }) {
                                     </div>
                                 </div>
                             </div>
-                            <VideoCover thumbArray={thumbArray} source={source} timeCoverRef={timeCoverRef} />
+                            <VideoCover
+                                thumbArray={thumbArray}
+                                source={source}
+                                timeCoverRef={timeCoverRef}
+                                file={file}
+                            />
                             <Viewable
                                 limit={limit}
                                 setLimit={setLimit}

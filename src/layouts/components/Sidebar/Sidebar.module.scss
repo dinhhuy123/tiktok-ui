@@ -1,33 +1,63 @@
+.scrollbarView {
+    margin-bottom: 0 !important;
+    overflow: hidden scroll !important;
+}
+.scrollbarTrack {
+    top: 0;
+    bottom: 0;
+    right: 3px;
+    transition: opacity 0.5s !important;
+}
+.scrollbarThumb {
+    border-radius: 4px;
+    background-color: rgba(22, 24, 35, 0.06);
+}
+
 .wrapper {
-    width: var(--sidebar-width);
-    padding: 20px 0 26px 20px;
-    margin-left: -18px;
-    padding-right: 10px;
+    width: inherit;
 }
 
-.sidebar {
-    max-height: calc(100% - 60px);
-    overflow-y: overlay;
-    padding-bottom: 20px;
+.innerFixed {
+    // overflow-y: overlay;
     position: fixed;
+    top: 61px;
+    bottom: 0;
+    // z-index: 1;
+    width: inherit;
+    max-height: calc(100% - 60px);
+    padding-bottom: 20px;
+    background-color: var(--white);
 
-    &::-webkit-scrollbar {
-        display: none;
-    }
-    &:hover {
-        &::-webkit-scrollbar {
-            display: block;
-        }
-    }
+    // &::-webkit-scrollbar {
+    //     display: none;
+    // }
+    // &:hover {
+    //     &::-webkit-scrollbar {
+    //         display: block;
+    //     }
+    // }
 }
 
-.login-sidebar {
+.content {
+    padding: 20px 8px 26px;
+}
+
+.loginSidebar {
     display: flex;
     flex-direction: column;
-    border-top: 1px solid #e3e3e4;
+    // border-top: 1px solid #e3e3e4;
     position: relative;
     padding: 20px 8px 24px 8px;
     margin: 0;
+    &::before {
+        content: '';
+        position: absolute;
+        left: 8px;
+        right: 8px;
+        top: 0;
+        height: 1px;
+        background: rgba(22, 24, 35, 0.12);
+    }
 }
 
 .title {
